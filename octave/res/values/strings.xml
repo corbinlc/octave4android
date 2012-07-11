@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Octave launching via Android Terminal Emulator</string>
+    <string name="app_name">octave</string>
+
+</resources>
