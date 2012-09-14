@@ -3,21 +3,19 @@ package com.octave;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import org.apache.commons.io.IOUtils;
+import java.util.zip.ZipInputStream;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewTreeObserver;
@@ -28,10 +26,9 @@ import android.widget.Toast;
 public class octaveMain extends Activity implements Observer {
 
 	private ProgressDialog mPd_ring;
-	private int mUnzipCnt;
-	private boolean mNoUnzipNecessary;
-	private boolean mUnzipsAllKickedOff;
 	private boolean mAlreadyStarted;
+	private Toast mToast;
+	private int mBufferSize = 1024;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -39,7 +36,9 @@ public class octaveMain extends Activity implements Observer {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main); 
 		TextView textView = (TextView)findViewById(R.id.myTextView);
-		
+		textView.setText("Octave launching via Android Terminal Emulator\n\nIf this fails:\nFor now, users are required to have a recent version of the Android Terminal Emulator installed before installing Octave.  Please uninstall Octave, confirm you have Android Terminal Emulator installed and up to date and then reinstall Octave.");
+		mToast = Toast.makeText(this, "For now, users are required to have a recent version of the Android Terminal Emulator installed before installing Octave.  Please uninstall Octave, confirm you have Android Terminal Emulator installed and up to date and then reinstall Octave.", Toast.LENGTH_LONG);
+
 		mAlreadyStarted = false;
 
 		ViewTreeObserver viewTreeObserver = textView.getViewTreeObserver();
@@ -49,11 +48,18 @@ public class octaveMain extends Activity implements Observer {
 				public void onGlobalLayout() {
 					if (mAlreadyStarted == false) {
 						mAlreadyStarted = true;
-						mNoUnzipNecessary = true;
-						mUnzipsAllKickedOff = false;
 						mPd_ring = ProgressDialog.show(octaveMain.this, "Unpacking Octave", "This may take a while (several minutes if this is the first time).",true);
 						mPd_ring.setCancelable(false);
-						unpackAllZipFiles();
+						Thread t = new Thread() {
+							public void run() {
+								try {
+									unpackAllZipFiles();
+								} catch (Exception e) {
+									Log.e("LongToast", "", e);
+								}
+							}
+						};
+						t.start();
 					}
 				}
 			});
@@ -66,18 +72,40 @@ public class octaveMain extends Activity implements Observer {
 		// application must declare jackpal.androidterm.permission.RUN_SCRIPT in manifest
 		Intent i = new Intent("jackpal.androidterm.RUN_SCRIPT");
 		i.addCategory(Intent.CATEGORY_DEFAULT);
-		i.putExtra("jackpal.androidterm.iInitialCommand", "/data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
+		i.putExtra("jackpal.androidterm.iInitialCommand", "cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
+		//i.putExtra("jackpal.androidterm.iInitialCommand", "/data/data/com.octave/mylib/ld-linux.so.3 /data/data/com.octave/bin/octave");
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this, "You must have a recent version of the Android Terminal Emulator installed for this to work.", Toast.LENGTH_LONG).show();
+			fireLongToast();
 			//To do: send them to the market in the future
+		} catch (SecurityException e) {
+			fireLongToast();
 		}
 
 	}
 
+	private void fireLongToast() {
+		Thread t = new Thread() {
+			public void run() {
+				int count = 0;
+				try {
+					while (count < 5) {
+						mToast.show();
+						sleep(2500);
+						count++;
+					}
+				} catch (Exception e) {
+					Log.e("LongToast", "", e);
+				}
+			}
+		};
+		t.start();
+	}
+
+
 	private void unpackAllZipFiles() {
-		
+
 		Runtime runtime = Runtime.getRuntime(); 
 		Process process;
 		try {
@@ -104,7 +132,41 @@ public class octaveMain extends Activity implements Observer {
 		File unzipList = new File("/data/data/com.octave/unzippedFiles/");
 		if (unzipList.exists()==false) { 
 			unzipList.mkdir();
-		} 
+		}
+
+		File tmpDir = new File("/data/data/com.octave/tmp/");
+		if (tmpDir.exists()==false) { 
+			tmpDir.mkdir();
+		}
+		try {
+			process = runtime.exec("chmod 0777 /data/data/com.octave/tmp");
+			try {
+				process.waitFor();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		File tmpOctRc = new File("/data/data/com.octave/.octaverc");
+		if (tmpOctRc.exists()==false) { 
+			try {
+				tmpOctRc.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			process = runtime.exec("chmod 0777 /data/data/com.octave/.octaverc");
+			try {
+				process.waitFor();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		File fileList = new File("/data/data/com.octave/lib/"); 
 		if (fileList != null) { 
@@ -121,9 +183,6 @@ public class octaveMain extends Activity implements Observer {
 						}
 					}
 					if (alreadyUnpacked == false) {
-						mUnzipCnt++;
-						mNoUnzipNecessary = false;
-
 						unzipFile(fileName);
 						File tmpFile = new File("/data/data/com.octave/unzippedFiles/" + fileName);
 						try {
@@ -134,10 +193,7 @@ public class octaveMain extends Activity implements Observer {
 					}
 				}
 			}
-			if (mNoUnzipNecessary) {
-				kickItOff();
-			}
-			mUnzipsAllKickedOff = true;
+			kickItOff();
 		}
 	}
 
@@ -147,106 +203,132 @@ public class octaveMain extends Activity implements Observer {
 
 		String fullPath = filePath + filename; 
 		Log.d("UnZip", "unzipping " + fullPath + " to " + unzipLocation); 
-		new UnZipTask().execute(fullPath, unzipLocation); 
+		try {
+			unzip(fullPath, unzipLocation);
+		} catch (IOException e) {
+			Log.d("UnZip", "Failed");
+		} 
 	}
 
-	private class UnZipTask extends AsyncTask<String, Void, Boolean> { 
+	public void unzip(String zipFile, String location) throws IOException {
+		int size;
+		byte[] buffer = new byte[mBufferSize];
 
-		private static final String TAG = "UnZip"; 
+		String[] splitPath = zipFile.split("/");
+		String[] splitExtension = splitPath[splitPath.length-1].substring(6).split(".so");
+		String[] splitVersion = splitExtension[0].split("_");
+		deleteDir(new File(location + "/" + splitVersion[0]));
 
-		@SuppressWarnings("rawtypes") 
-		@Override 
-		protected Boolean doInBackground(String... params) { 
-			String filePath = params[0]; 
-			String destinationPath = params[1]; 
-
-			File archive = new File(filePath); 
-			try { 
-				ZipFile zipfile = new ZipFile(archive); 
-				for (Enumeration e = zipfile.entries(); e.hasMoreElements();) { 
-					ZipEntry entry = (ZipEntry) e.nextElement(); 
-					unzipEntry(zipfile, entry, destinationPath); 
-				} 
-			} catch (Exception e) { 
-				Log.e(TAG, "Error while extracting file " + archive, e);  
-				return false; 
+		try {
+			File f = new File(location);
+			if(!f.isDirectory()) {
+				f.mkdirs();
 			}
-
-			mUnzipCnt--;
-			if ((mUnzipsAllKickedOff == true) && (mUnzipCnt == 0)) {
-				kickItOff();
-			}
-
-			return true; 
-		} 
-
-		private void unzipEntry(ZipFile zipfile, ZipEntry entry, 
-				String outputDir) throws IOException { 
-
-			File outputFile = new File(outputDir, entry.getName());
-			if (entry.isDirectory()) { 
-				createDir(outputFile);
-				return; 
-			} 
-
-			if (!outputFile.getParentFile().exists()) { 
-				createDir(outputFile.getParentFile()); 
-			} 
-
-			Log.v(TAG, "Extracting: " + entry); 
-			BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry)); 
-			BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile)); 
-
-			try { 
-				IOUtils.copy(inputStream, outputStream); 
-			} finally { 
-				outputStream.close(); 
-				inputStream.close(); 
-			} 
-			
-			Runtime runtime = Runtime.getRuntime(); 
-			Process process;
+			ZipInputStream zin = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile), mBufferSize));
 			try {
-				process = runtime.exec("chmod 0755 " + outputFile.getAbsolutePath());
-				try {
-					process.waitFor();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} 
-		} 
+				ZipEntry ze = null;
+				while ((ze = zin.getNextEntry()) != null) {
+					String path = location + ze.getName();
 
-		private void createDir(File dir) {
-			if (!dir.getParentFile().exists()) { 
-				createDir(dir.getParentFile()); 
-			}
-			if (dir.exists()) { 
-				return; 
-			} 
-			Log.v(TAG, "Creating dir " + dir.getName()); 
-			if (!dir.mkdir()) { 
-				throw new RuntimeException("Can not create dir " + dir); 
-			}
-			Runtime runtime = Runtime.getRuntime(); 
-		    Process process;
-			try {
-				process = runtime.exec("chmod 0755 " + dir.getAbsolutePath());
-				try {
-					process.waitFor();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					File unzipFile = new File(path);
+					if (!unzipFile.getParentFile().exists()) {
+						Log.v("Unzip", "create parents " + unzipFile.getName());
+						createDir(unzipFile.getParentFile()); 
+					}
+					if (!unzipFile.exists()) {
+						if (ze.isDirectory()) {
+							Log.v("Unzip", "found directory " + unzipFile.getName());
+							if(!unzipFile.isDirectory()) {
+								createDir(unzipFile);
+							}
+						}	else {	
+							Log.v("Unzip", "found file " + unzipFile.getName());
+							FileOutputStream out = new FileOutputStream(path, false);
+							BufferedOutputStream fout = new BufferedOutputStream(out, mBufferSize);
+							try {
+								while ( (size = zin.read(buffer, 0, mBufferSize)) != -1 ) {
+									fout.write(buffer, 0, size);
+								}
+
+								zin.closeEntry();
+							}
+							finally {
+								fout.flush();
+								fout.close();
+								Log.v("Unzip", "changing permissions " + unzipFile.getName());
+								Runtime runtime = Runtime.getRuntime(); 
+								Process process;
+								try {
+									process = runtime.exec("chmod 0755 " + unzipFile.getAbsolutePath());
+									try {
+										process.waitFor();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+							}
+						}
+					}
 				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} 
-		} 
+			}
+			finally {
+				zin.close();
+			}
+		}
+		catch (Exception e) {
+			Log.e("main", "Unzip exception", e);
+		}
+	}
+
+	public boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i=0; i<children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+		// The directory is now empty so delete it
+		return dir.delete();
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 	} 
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{ 
+		super.onConfigurationChanged(newConfig);
+	}
+
+	private void createDir(File dir) {
+		if (!dir.getParentFile().exists()) { 
+			createDir(dir.getParentFile()); 
+		}
+		if (dir.exists()) { 
+			return; 
+		} 
+		Log.v("Unzip", "Creating dir " + dir.getName()); 
+		if (!dir.mkdir()) { 
+			throw new RuntimeException("Can not create dir " + dir); 
+		}
+		Runtime runtime = Runtime.getRuntime(); 
+		Process process;
+		try {
+			process = runtime.exec("chmod 0755 " + dir.getAbsolutePath());
+			try {
+				process.waitFor();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} 
+	}
 
 }
