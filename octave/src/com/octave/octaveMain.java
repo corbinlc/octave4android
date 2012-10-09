@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -15,6 +13,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +23,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class octaveMain extends Activity implements Observer {
+public class octaveMain extends Activity {
 
 	private ProgressDialog mPd_ring;
 	private boolean mAlreadyStarted;
@@ -53,7 +53,7 @@ public class octaveMain extends Activity implements Observer {
 						Thread t = new Thread() {
 							public void run() {
 								try {
-									unpackAllZipFiles();
+									unpackAll();
 								} catch (Exception e) {
 									Log.e("LongToast", "", e);
 								}
@@ -66,23 +66,72 @@ public class octaveMain extends Activity implements Observer {
 		}
 	}
 
-	private void kickItOff() {
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+
+		if(getIntent().hasExtra("returnFromMeasure")) {
+			Intent i2 = new Intent("jackpal.androidterm.RUN_SCRIPT");
+			i2.addCategory(Intent.CATEGORY_DEFAULT);
+			i2.putExtra("jackpal.androidterm.iInitialCommand", "cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
+			//i.putExtra("jackpal.androidterm.iInitialCommand", "/data/data/com.octave/mylib/ld-linux.so.3 /data/data/com.octave/bin/octave");
+			try {
+				startActivity(i2);
+			} catch (ActivityNotFoundException e1) {
+				fireLongToast();
+				//To do: send them to the market in the future
+			} catch (SecurityException e2) {
+				fireLongToast();
+			}
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent data) {
+		if (requestCode == 0) {
+			if (resultCode == 0) {
+				kickItOff();
+			}
+		}
+	}
+
+	private void goMeasure() {
 		mPd_ring.dismiss();
 		// opens a new window and runs "echo 'Hi there!'"
 		// application must declare jackpal.androidterm.permission.RUN_SCRIPT in manifest
-		Intent i = new Intent("jackpal.androidterm.RUN_SCRIPT");
-		i.addCategory(Intent.CATEGORY_DEFAULT);
-		i.putExtra("jackpal.androidterm.iInitialCommand", "cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
+		Intent i1 = new Intent();
+		i1.setClassName("com.droidplot", "com.droidplot.droidplotMain");
+		i1.putExtra("measureAndExit",true);
+		try {
+			startActivityForResult(i1,0);
+		} catch (ActivityNotFoundException e) {
+			//TODO: Should give them information that plotting is disabled
+			kickItOff();
+		}
+	}
+
+	private void kickItOff() {
+		// opens a new window and runs "echo 'Hi there!'"
+		// application must declare jackpal.androidterm.permission.RUN_SCRIPT in manifest
+		Intent i2 = new Intent("jackpal.androidterm.RUN_SCRIPT");
+		i2.addCategory(Intent.CATEGORY_DEFAULT);
+		i2.putExtra("jackpal.androidterm.iInitialCommand", "cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
 		//i.putExtra("jackpal.androidterm.iInitialCommand", "/data/data/com.octave/mylib/ld-linux.so.3 /data/data/com.octave/bin/octave");
 		try {
-			startActivity(i);
-		} catch (ActivityNotFoundException e) {
+			startActivity(i2);
+		} catch (ActivityNotFoundException e1) {
 			fireLongToast();
 			//To do: send them to the market in the future
-		} catch (SecurityException e) {
+		} catch (SecurityException e2) {
 			fireLongToast();
 		}
-
 	}
 
 	private void fireLongToast() {
@@ -104,97 +153,183 @@ public class octaveMain extends Activity implements Observer {
 	}
 
 
-	private void unpackAllZipFiles() {
+	private void unpackAll() {
 
-		Runtime runtime = Runtime.getRuntime(); 
-		Process process;
+		String version;
+
 		try {
-			process = runtime.exec("chmod 0755 /data/data/com.octave");
-			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			PackageInfo pi = getPackageManager().getPackageInfo("com.addi", 0);
+			version = pi.versionName;     // this is the line Eclipse complains
 		}
-		try {
-			process = runtime.exec("chmod 0755 /data/data/com.octave/lib");
-			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} 
-
-		File unzipList = new File("/data/data/com.octave/unzippedFiles/");
-		if (unzipList.exists()==false) { 
-			unzipList.mkdir();
+		catch (PackageManager.NameNotFoundException e) {
+			// eat error, for testing
+			version = "?";
 		}
 
-		File tmpDir = new File("/data/data/com.octave/tmp/");
-		if (tmpDir.exists()==false) { 
-			tmpDir.mkdir();
-		}
-		try {
-			process = runtime.exec("chmod 0777 /data/data/com.octave/tmp");
+		File versionFile = new File("/data/data/com.octave/unzippedFiles/version");
+		if (versionFile.exists()==false) {
+			Runtime runtime = Runtime.getRuntime(); 
+			Process process;
 			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				process = runtime.exec("chmod 0755 /data/data/com.octave");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+			try {
+				process = runtime.exec("chmod 0755 /data/data/com.octave/lib");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} 
 
-		File tmpOctRc = new File("/data/data/com.octave/.octaverc");
-		if (tmpOctRc.exists()==false) { 
-			try {
-				tmpOctRc.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
+			File unzipList = new File("/data/data/com.octave/unzippedFiles/");
+			if (unzipList.exists()==false) { 
+				unzipList.mkdir();
 			}
-		}
-		try {
-			process = runtime.exec("chmod 0777 /data/data/com.octave/.octaverc");
-			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
-		File fileList = new File("/data/data/com.octave/lib/"); 
-		if (fileList != null) { 
-			File[] filenames = fileList.listFiles(); 
-			for (File tmpf : filenames) { 
-				String fileName = tmpf.getName();
-				if (fileName.startsWith("libzip")) {
-					boolean alreadyUnpacked = false;
-					File[] unzipnames = unzipList.listFiles(); 
-					for (File tmpUnzipName: unzipnames) {
-						String unzipName = tmpUnzipName.getName();
-						if (unzipName.equalsIgnoreCase(fileName)) {
-							alreadyUnpacked = true;
+			File tmpDir = new File("/data/data/com.octave/bin/");
+			if (tmpDir.exists()==false) { 
+				tmpDir.mkdir();
+			}
+			try {
+				process = runtime.exec("rm -f /data/data/com.octave/bin/*");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				process = runtime.exec("chmod 0755 /data/data/com.octave/bin");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+			tmpDir = new File("/data/data/com.octave/mylib/");
+			if (tmpDir.exists()==false) { 
+				tmpDir.mkdir();
+			}
+			try {
+				process = runtime.exec("rm -f /data/data/com.octave/mylib/*;");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				process = runtime.exec("chmod 0777 /data/data/com.octave/mylib");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+			tmpDir = new File("/data/data/com.octave/tmp/");
+			if (tmpDir.exists()==false) { 
+				tmpDir.mkdir();
+			}
+			try {
+				process = runtime.exec("chmod 0777 /data/data/com.octave/tmp");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+			File tmpOctRc = new File("/data/data/com.octave/.octaverc");
+			if (tmpOctRc.exists()==false) { 
+				try {
+					tmpOctRc.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				process = runtime.exec("chmod 0777 /data/data/com.octave/.octaverc");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+			File fileList = new File("/data/data/com.octave/lib/"); 
+			if (fileList != null) { 
+				File[] filenames = fileList.listFiles(); 
+				for (File tmpf : filenames) { 
+					String fileName = tmpf.getName();
+					if (fileName.startsWith("lib__")) {
+						String[] splitStr;
+						splitStr = fileName.substring(0,fileName.length()-3).split("__");  //drop .so and split
+						String newFileName = splitStr[2];  //build up correct filename
+						for(int i=3; i < splitStr.length ; i++) {
+							newFileName = newFileName + "." + splitStr[i];
 						}
-					}
-					if (alreadyUnpacked == false) {
-						unzipFile(fileName);
-						File tmpFile = new File("/data/data/com.octave/unzippedFiles/" + fileName);
 						try {
-							tmpFile.createNewFile();
-						} catch (IOException e) {
-							e.printStackTrace();
+							process = runtime.exec("ln -s /data/data/com.octave/lib/" + fileName + " /data/data/com.octave/"+splitStr[1]+"/"+newFileName);
+							try {
+								process.waitFor();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					} else if (fileName.startsWith("libzip")) {
+						boolean alreadyUnpacked = false;
+						File[] unzipnames = unzipList.listFiles(); 
+						for (File tmpUnzipName: unzipnames) {
+							String unzipName = tmpUnzipName.getName();
+							if (unzipName.equalsIgnoreCase(fileName)) {
+								alreadyUnpacked = true;
+							}
+						}
+						if (alreadyUnpacked == false) {
+							unzipFile(fileName);
+							File tmpFile = new File("/data/data/com.octave/unzippedFiles/" + fileName);
+							try {
+								tmpFile.createNewFile();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
 			}
-			kickItOff();
+			try {
+				versionFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		goMeasure();
 	}
 
 	private void unzipFile(String filename) { 
@@ -259,7 +394,7 @@ public class octaveMain extends Activity implements Observer {
 								Runtime runtime = Runtime.getRuntime(); 
 								Process process;
 								try {
-									process = runtime.exec("chmod 0755 " + unzipFile.getAbsolutePath());
+									process = runtime.exec("chmod 0777 " + unzipFile.getAbsolutePath());
 									try {
 										process.waitFor();
 									} catch (InterruptedException e) {
@@ -297,10 +432,6 @@ public class octaveMain extends Activity implements Observer {
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
-	} 
-
-	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{ 
 		super.onConfigurationChanged(newConfig);
@@ -320,7 +451,7 @@ public class octaveMain extends Activity implements Observer {
 		Runtime runtime = Runtime.getRuntime(); 
 		Process process;
 		try {
-			process = runtime.exec("chmod 0755 " + dir.getAbsolutePath());
+			process = runtime.exec("chmod 0777 " + dir.getAbsolutePath());
 			try {
 				process.waitFor();
 			} catch (InterruptedException e) {
@@ -329,6 +460,27 @@ public class octaveMain extends Activity implements Observer {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} 
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		File directory = new File("/data/data/com.octave/tmp");
+
+		// Get all files in directory
+		if (directory.exists()) {
+			File[] files = directory.listFiles();
+			for (File file : files)
+			{
+				// Delete each file
+				if (!file.delete())
+				{
+					// Failed to delete file
+					System.out.println("Failed to delete "+file);
+				}
+			}
+		}
+		finish();
 	}
 
 }
