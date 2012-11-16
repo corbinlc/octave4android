@@ -9,13 +9,19 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import android.app.Activity;
+import net.robotmedia.billing.BillingRequest.ResponseCode;
+import net.robotmedia.billing.helper.AbstractBillingActivity;
+import net.robotmedia.billing.model.Transaction.PurchaseState;
+
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewTreeObserver;
@@ -23,12 +29,16 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class octaveMain extends Activity {
+public class octaveMain extends AbstractBillingActivity {
 
 	private ProgressDialog mPd_ring;
 	private boolean mAlreadyStarted;
 	private Toast mToast;
 	private int mBufferSize = 1024;
+	private boolean mBillingSupported = false;
+	private boolean mSubscriptionSupported = false;
+	private boolean mExpectingResult = false;
+	private boolean mAskForDonation = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -74,7 +84,7 @@ public class octaveMain extends Activity {
 		if(getIntent().hasExtra("returnFromMeasure")) {
 			Intent i2 = new Intent("jackpal.androidterm.RUN_SCRIPT");
 			i2.addCategory(Intent.CATEGORY_DEFAULT);
-			i2.putExtra("jackpal.androidterm.iInitialCommand", "cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
+			i2.putExtra("jackpal.androidterm.iInitialCommand", "umask 000; cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
 			//i.putExtra("jackpal.androidterm.iInitialCommand", "/data/data/com.octave/mylib/ld-linux.so.3 /data/data/com.octave/bin/octave");
 			try {
 				startActivity(i2);
@@ -95,9 +105,12 @@ public class octaveMain extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent data) {
-		if (requestCode == 0) {
-			if (resultCode == 0) {
-				kickItOff();
+		if (mExpectingResult) {
+			mExpectingResult = false;
+			if (requestCode == 0) {
+				if (resultCode == 0) {
+					kickItOff();
+				}
 			}
 		}
 	}
@@ -110,22 +123,31 @@ public class octaveMain extends Activity {
 		i1.setClassName("com.droidplot", "com.droidplot.droidplotMain");
 		i1.putExtra("measureAndExit",true);
 		try {
+			mExpectingResult = true;
 			startActivityForResult(i1,0);
 		} catch (ActivityNotFoundException e) {
 			//TODO: Should give them information that plotting is disabled
+			mExpectingResult = false;
 			kickItOff();
 		}
 	}
 
 	private void kickItOff() {
+		if (mAskForDonation == true) {
+			mAskForDonation = false;
+			askForDonation();
+			File tmpFile = new File("/data/data/com.octave/unzippedFiles/askForDonation");
+			tmpFile.delete();
+			return;
+		}
 		// opens a new window and runs "echo 'Hi there!'"
 		// application must declare jackpal.androidterm.permission.RUN_SCRIPT in manifest
 		Intent i2 = new Intent("jackpal.androidterm.RUN_SCRIPT");
 		i2.addCategory(Intent.CATEGORY_DEFAULT);
-		i2.putExtra("jackpal.androidterm.iInitialCommand", "cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
+		i2.putExtra("jackpal.androidterm.iInitialCommand", "umask 000; cd /data/data/com.octave/; /data/data/com.octave/mylib/ld-linux.so.3 --library-path /data/data/com.octave/mylib /data/data/com.octave/bin/octave");
 		//i.putExtra("jackpal.androidterm.iInitialCommand", "/data/data/com.octave/mylib/ld-linux.so.3 /data/data/com.octave/bin/octave");
 		try {
-			startActivity(i2);
+			startActivity(i2); 
 		} catch (ActivityNotFoundException e1) {
 			fireLongToast();
 			//To do: send them to the market in the future
@@ -158,7 +180,7 @@ public class octaveMain extends Activity {
 		String version;
 
 		try {
-			PackageInfo pi = getPackageManager().getPackageInfo("com.addi", 0);
+			PackageInfo pi = getPackageManager().getPackageInfo("com.octave", 0);
 			version = pi.versionName;     // this is the line Eclipse complains
 		}
 		catch (PackageManager.NameNotFoundException e) {
@@ -166,7 +188,12 @@ public class octaveMain extends Activity {
 			version = "?";
 		}
 
-		File versionFile = new File("/data/data/com.octave/unzippedFiles/version");
+		File versionFile = new File("/data/data/com.octave/unzippedFiles/version_"+version);
+		
+		File donationFile = new File("/data/data/com.octave/unzippedFiles/askForDonation");
+		if (donationFile.exists() == true) {
+			mAskForDonation = true;
+		}
 		if (versionFile.exists()==false) {
 			Runtime runtime = Runtime.getRuntime(); 
 			Process process;
@@ -324,7 +351,18 @@ public class octaveMain extends Activity {
 				}
 			}
 			try {
+				process = runtime.exec("chmod -R 0777 /data/data/com.octave/share");
+				try {
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
 				versionFile.createNewFile();
+				donationFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -483,4 +521,98 @@ public class octaveMain extends Activity {
 		finish();
 	}
 
+	@Override
+	public byte[] getObfuscationSalt() {
+		return new byte[] {8, 6, 7, 5, 3, 0, 9, 8, 6, 7, 5, 3, 0, 9, 8, 6, 7, 5, 30, 9};
+	}
+
+	@Override
+	public String getPublicKey() {
+		return "none of your business";
+	}
+
+	@Override
+	public void onBillingChecked(boolean supported) {
+		mBillingSupported = supported;
+	}
+
+	@Override
+	public void onSubscriptionChecked(boolean supported) {
+		mSubscriptionSupported = supported;
+	}
+
+	@Override
+	public void onPurchaseStateChanged(String itemId, PurchaseState state) {
+		// TODO Auto-generated method stub
+		if (state == PurchaseState.PURCHASED) {
+			Toast.makeText(getApplicationContext(), "Thank you for your support!", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	@Override
+	public void onRequestPurchaseResponse(String itemId, ResponseCode response) {
+		if (response == ResponseCode.RESULT_OK) {
+			Toast.makeText(getApplicationContext(), "Something happened, I'll ask again later.", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	final CharSequence[] mItemsLong={"Any amount via Paypal (preferred)","$5 via Play Market","$10 via Play Market","$25 via Play Market","$50 via Play Market","$100 via Play Market","Maybe Later"};
+	final CharSequence[] mItemsShort={"Any amount via Paypal","Maybe Later"};
+	private void askForDonation() {
+		AlertDialog.Builder builder=new AlertDialog.Builder(octaveMain.this);
+
+		if (mBillingSupported == true) {
+			builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsLong, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case 0: 
+						Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+						startActivity(viewIntent);
+						break;	
+					case 1:
+						requestPurchase("com.octave.five_dollar");
+						break;
+					case 2:
+						requestPurchase("com.octave.ten_dollar");
+						break;
+					case 3:
+						requestPurchase("com.octave.twentyfive_dollar");
+						break;
+					case 4:
+						requestPurchase("com.octave.fifty_dollar");
+						break;
+					case 5:
+						requestPurchase("com.octave.onehundered_dollar");
+						break;
+					case 6:
+						Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
+						break;
+					}
+					kickItOff();
+				}
+
+			});
+		} else {
+			builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsShort, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case 0: 
+						Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+						startActivity(viewIntent);
+						break;	
+					case 1:
+						Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
+						break;
+					}
+					kickItOff();
+				}
+
+			});
+		}
+		builder.show();
+	}
 }
