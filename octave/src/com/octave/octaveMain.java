@@ -13,6 +13,7 @@ import net.robotmedia.billing.BillingRequest.ResponseCode;
 import net.robotmedia.billing.helper.AbstractBillingActivity;
 import net.robotmedia.billing.model.Transaction.PurchaseState;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -189,7 +190,7 @@ public class octaveMain extends AbstractBillingActivity {
 		}
 
 		File versionFile = new File("/data/data/com.octave/unzippedFiles/version_"+version);
-		
+
 		File donationFile = new File("/data/data/com.octave/unzippedFiles/askForDonation");
 		if (donationFile.exists() == true) {
 			mAskForDonation = true;
@@ -559,60 +560,68 @@ public class octaveMain extends AbstractBillingActivity {
 	final CharSequence[] mItemsLong={"Any amount via Paypal (preferred)","$5 via Play Market","$10 via Play Market","$25 via Play Market","$50 via Play Market","$100 via Play Market","Maybe Later"};
 	final CharSequence[] mItemsShort={"Any amount via Paypal","Maybe Later"};
 	private void askForDonation() {
-		AlertDialog.Builder builder=new AlertDialog.Builder(octaveMain.this);
 
-		if (mBillingSupported == true) {
-			builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsLong, new DialogInterface.OnClickListener() {
+		this.runOnUiThread(new Runnable() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					switch (which) {
-					case 0: 
-						Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
-						startActivity(viewIntent);
-						break;	
-					case 1:
-						requestPurchase("com.octave.five_dollar");
-						break;
-					case 2:
-						requestPurchase("com.octave.ten_dollar");
-						break;
-					case 3:
-						requestPurchase("com.octave.twentyfive_dollar");
-						break;
-					case 4:
-						requestPurchase("com.octave.fifty_dollar");
-						break;
-					case 5:
-						requestPurchase("com.octave.onehundered_dollar");
-						break;
-					case 6:
-						Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
-						break;
-					}
-					kickItOff();
+			@Override
+			public void run() {
+				AlertDialog.Builder builder=new AlertDialog.Builder(octaveMain.this);
+
+				if (mBillingSupported == true) {
+					builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsLong, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0: 
+								Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+								startActivity(viewIntent);
+								break;	
+							case 1:
+								requestPurchase("com.octave.five_dollar");
+								break;
+							case 2:
+								requestPurchase("com.octave.ten_dollar");
+								break;
+							case 3:
+								requestPurchase("com.octave.twentyfive_dollar");
+								break;
+							case 4:
+								requestPurchase("com.octave.fifty_dollar");
+								break;
+							case 5:
+								requestPurchase("com.octave.onehundered_dollar");
+								break;
+							case 6:
+								Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
+								break;
+							}
+							kickItOff();
+						}
+
+					});
+				} else {
+					builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsShort, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0: 
+								Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+								startActivity(viewIntent);
+								break;	
+							case 1:
+								Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
+								break;
+							}
+							kickItOff();
+						}
+
+					});
 				}
+				builder.show();
+			}
+		});
 
-			});
-		} else {
-			builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsShort, new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					switch (which) {
-					case 0: 
-						Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
-						startActivity(viewIntent);
-						break;	
-					case 1:
-						Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
-						break;
-					}
-					kickItOff();
-				}
-
-			});
-		}
-		builder.show();
 	}
 }
