@@ -1,0 +1,14 @@
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("fminbnd");
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("fminunc");
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("fsolve");
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("fzero");
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("lsqnonneg");
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("pqpnonneg");
+## Discard result to avoid polluting workspace with ans at startup.
+[~] = __all_opts__ ("qp");

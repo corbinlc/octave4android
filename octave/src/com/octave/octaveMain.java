@@ -145,19 +145,19 @@ public class octaveMain extends Activity {
 
 	private void unpackAll() {
 
-	    if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-	    	mHome = Environment.getExternalStorageDirectory().getAbsolutePath()+"/freeRoot";
-	    	File freeRoot = new File(mHome);
-	    	if (freeRoot.exists()==false) { 
-	    		freeRoot.mkdir();
-				exec("chmod 0777 " + mHome);
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			mHome = Environment.getExternalStorageDirectory().getAbsolutePath()+"/freeRoot";
+			File freeRoot = new File(mHome);
+			if (freeRoot.exists()==false) { 
+				freeRoot.mkdir();
+				exec("chmod 0777 " + mHome); 
 			}
-	    } else {
-	    	mHome = "/data/data/com.octave";
-	    }
-	    
-	    File octaverc = new File(mHome+"/.octaverc");
-    	if (octaverc.exists()==false) { 
+		} else {
+			mHome = "/data/data/com.octave";
+		}
+
+		File octaverc = new File(mHome+"/.octaverc");
+		if (octaverc.exists()==false) { 
 			try {
 				octaverc.createNewFile();
 			} catch (IOException e) {
@@ -165,25 +165,12 @@ public class octaveMain extends Activity {
 			}
 			exec("chmod 0777 " + mHome + "/.octaverc");
 		}
-		
-		String version;
-
-		try {
-			PackageInfo pi = getPackageManager().getPackageInfo("com.octave", 0);
-			version = pi.versionName;     // this is the line Eclipse complains
-		}
-		catch (PackageManager.NameNotFoundException e) {
-			// eat error, for testing
-			version = "?";
-		}
-
-		File versionFile = new File("/data/data/com.octave/version_"+version);
 
 		File donationFile = new File("/data/data/com.octave/askForDonation");
 		if (donationFile.exists() == true) {
 			mAskForDonation = true;
 		}
-		if (versionFile.exists()==false) {
+		if (updateRequired("com.octave")) {
 
 			exec("chmod 0777 /data/data/com.octave");
 			exec("chmod 0777 /data/data/com.octave/lib"); 
@@ -202,25 +189,39 @@ public class octaveMain extends Activity {
 			}
 			exec("chmod 0777 /data/data/com.octave/tmp");
 
-			mErrOcc = false;
-			//first create directories needed
-			processDirFile("/data/data/com.octave/lib/lib__install_dir.so");
-			//create all files needed, but linking them to actual files in the lib dir
-			processLinkFile("/data/data/com.octave/lib/lib__install_file.so");
-			//create all links needed
-			processLinkFile("/data/data/com.octave/lib/lib__install_link.so");
-
-			if (mErrOcc == false) {
-				try {
-					versionFile.createNewFile();
-					donationFile.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
 		}
+		
+		installPackage("com.octave");
+		installPackage("com.octave.signal");
+		installPackage("com.octave.mapping");
+		installPackage("com.octave.fuzzy");
+		installPackage("com.octave.control");
+		installPackage("com.octave.io");
+		installPackage("com.octave.missing");
+		installPackage("com.octave.optim");
+		installPackage("com.octave.statistics");
+		
 		goMeasure();
+	}
+
+	private void installPackage(String packageName) {
+		String packageTopStr = "/data/data/"+packageName+"/lib/";
+		
+		mErrOcc = false;
+
+		if (updateRequired(packageName)) {
+			//first create directories needed
+			processDirFile(packageTopStr+"lib__install_dir.so");
+			//create all files needed, but linking them to actual files in the lib dir
+			processLinkFile(packageTopStr+"lib__install_file.so");
+			//create all links needed
+			processLinkFile(packageTopStr+"lib__install_link.so");
+			
+			if (mErrOcc == false) {
+				createVersionFile(packageName);
+			}
+		}
+		
 	}
 
 	public boolean deleteDir(File dir) {
@@ -263,6 +264,11 @@ public class octaveMain extends Activity {
 			br = new BufferedReader(new FileReader(linkFile));
 			String line;
 			while ((line = br.readLine()) != null) {
+				String[] temp = line.split(" ");
+				File tmpFile = new File(temp[1]);
+				if (tmpFile.exists()) {
+					tmpFile.delete();
+				}
 				exec("ln -s " + line);
 			}
 			br.close();
@@ -367,7 +373,7 @@ public class octaveMain extends Activity {
 		});
 
 	}
-	
+
 	private void launchATE() {
 		Intent i2 = new Intent("jackpal.androidterm.RUN_SCRIPT");
 		i2.addCategory(Intent.CATEGORY_DEFAULT);
@@ -376,11 +382,54 @@ public class octaveMain extends Activity {
 			startActivity(i2);
 		} catch (ActivityNotFoundException e1) {
 			fireLongToast();
-            String packageName = "jackpal.androidterm";
-            Intent goToMarket = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id="+packageName));
-            startActivity(goToMarket);
+			String packageName = "jackpal.androidterm";
+			Intent goToMarket = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id="+packageName));
+			startActivity(goToMarket);
 		} catch (SecurityException e2) {
 			fireLongToast();
+		}
+	}
+	
+	private boolean updateRequired(String packageName) {
+		String version;
+
+		try {
+			PackageInfo pi = getPackageManager().getPackageInfo(packageName, 0);
+			version = pi.versionName;     // this is the line Eclipse complains
+		}
+		catch (PackageManager.NameNotFoundException e) {
+			return false;
+		}
+
+		File versionFile = new File("/data/data/com.octave/"+packageName+"."+version);
+
+		if (versionFile.exists()==false) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private void createVersionFile(String packageName) {
+		String version;
+
+		try {
+			PackageInfo pi = getPackageManager().getPackageInfo(packageName, 0);
+			version = pi.versionName;     // this is the line Eclipse complains
+		}
+		catch (PackageManager.NameNotFoundException e) {
+			version = "?";
+		}
+
+		File versionFile = new File("/data/data/com.octave/"+packageName+"."+version);
+
+		if (versionFile.exists()==false) {
+			try {
+				versionFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
