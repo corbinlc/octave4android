@@ -3,8 +3,8 @@
     package="com.octave"
     android:sharedUserId="com.octave.sharedid"
     android:installLocation="auto"
-    android:versionCode="16"        
-    android:versionName="3.7.0+_16">      
+    android:versionCode="17"        
+    android:versionName="3.7.0+_17">      
     <supports-screens android:resizeable="true"
                       android:smallScreens="true"                       
                       android:normalScreens="true"                       

@@ -1,3 +1,21 @@
+// Copyright (C) 2013 Free Software Foundation FSF
+//
+// This file is part of octave4android.
+//
+// octave4android is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or (at
+// your option) any later version.
+//
+// octave4android is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with octave4android. If not, see <http://www.gnu.org/licenses/>.
+
+
 package com.octave;
 
 import java.io.BufferedReader;
@@ -200,6 +218,7 @@ public class octaveMain extends Activity {
 		installPackage("com.octave.missing");
 		installPackage("com.octave.optim");
 		installPackage("com.octave.statistics");
+		installPackage("com.octave.specfun");
 		
 		goMeasure();
 	}
