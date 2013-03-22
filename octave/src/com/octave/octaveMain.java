@@ -41,17 +41,18 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.octave.R;
 
 public class octaveMain extends Activity {
 
 	private ProgressDialog mPd_ring;
 	private boolean mAlreadyStarted;
-	private Toast mToast;
-	private Toast mToast2;
 	private boolean mExpectingResult = false;
+	private boolean mHoldOff = false;
 	private boolean mAskForDonation = false;
 	private boolean mErrOcc = false;
-	private String mHome = "/data/data/com.octave";
+	private String mPrefix = "com.octave";
+	private String mHome = "/data/data/" + mPrefix;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -59,8 +60,7 @@ public class octaveMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main); 
 		TextView textView = (TextView)findViewById(R.id.myTextView);
-		textView.setText("Octave is unpacking and launching via Android Terminal Emulator\nIf this fails, there are two primary reasons:\n1) You must have Android Terminal Emulator by Jack Palevick installed BEFORE you attempt to install Octave.  Make sure you have an up to date version installed and then uninstall and reinstall Octave.\n2) You may not have enough storage space for Octave to unpack.  Please free up space and then uninstall and then reinstall Octave.");
-		mToast = Toast.makeText(this, "For now, users are required to have a recent version of the Android Terminal Emulator installed before installing Octave.  Please uninstall Octave, confirm you have Android Terminal Emulator installed and up to date and then reinstall Octave.", Toast.LENGTH_LONG);
+		textView.setText("Octave is unpacking and launching.\nIf this fails, this is probabably the cause:\n  You may not have enough storage space for Octave to unpack.  Please free up space and then uninstall and then reinstall Octave.");
 
 		mAlreadyStarted = false;
 
@@ -102,6 +102,10 @@ public class octaveMain extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume(); 
+		if (mHoldOff == true) {
+			mHoldOff = false;
+			launchATE();
+		}
 	}
 
 	@Override
@@ -133,32 +137,14 @@ public class octaveMain extends Activity {
 	}
 
 	private void kickItOff() {
-		if (mAskForDonation == true) {
-			mAskForDonation = false;
-			File tmpFile = new File("/data/data/com.octave/askForDonation");
-			tmpFile.delete();
-			askForDonation();
-			return;
-		}
-		launchATE();
-	}
-
-	private void fireLongToast() {
-		Thread t = new Thread() {
-			public void run() {
-				int count = 0;
-				try {
-					while (count < 5) {
-						mToast.show();
-						sleep(2500);
-						count++;
-					}
-				} catch (Exception e) {
-					Log.e("LongToast", "", e);
-				}
+		if (mHoldOff == false) {
+			if (mAskForDonation == true) {
+				mAskForDonation = false;
+				askForDonation();
+				return;
 			}
-		};
-		t.start();
+			launchATE();
+		} 
 	}
 
 	private void unpackAll() {
@@ -171,7 +157,7 @@ public class octaveMain extends Activity {
 				exec("chmod 0777 " + mHome); 
 			}
 		} else {
-			mHome = "/data/data/com.octave";
+			mHome = "/data/data/" + mPrefix;
 		}
 
 		File octaverc = new File(mHome+"/.octaverc");
@@ -184,31 +170,55 @@ public class octaveMain extends Activity {
 			exec("chmod 0777 " + mHome + "/.octaverc");
 		}
 
-		File donationFile = new File("/data/data/com.octave/askForDonation");
-		if (donationFile.exists() == true) {
-			mAskForDonation = true;
+		installPackage("com.octave.donate5");
+		installPackage("com.octave.donate10");
+		installPackage("com.octave.donate25");
+		installPackage("com.octave.donate50");
+		installPackage("com.octave.donate100");
+		
+		mAskForDonation = true;
+		File testFile = new File("/data/data/" + mPrefix + "/donate5");
+		if (testFile.exists()) {
+			mAskForDonation = false;
 		}
-		if (updateRequired("com.octave")) {
+		testFile = new File("/data/data/" + mPrefix + "/donate10");
+		if (testFile.exists()) {
+			mAskForDonation = false;
+		}
+		testFile = new File("/data/data/" + mPrefix + "/donate25");
+		if (testFile.exists()) {
+			mAskForDonation = false;
+		}
+		testFile = new File("/data/data/" + mPrefix + "/donate50");
+		if (testFile.exists()) {
+			mAskForDonation = false;
+		}
+		testFile = new File("/data/data/" + mPrefix + "/donate100");
+		if (testFile.exists()) {
+			mAskForDonation = false;
+		}
 
-			exec("chmod 0777 /data/data/com.octave");
-			exec("chmod 0777 /data/data/com.octave/lib"); 
+		if (updateRequired(mPrefix)) {
+
+			exec("chmod 0777 /data/data/" + mPrefix);
+			exec("chmod 0777 /data/data/" + mPrefix + "/lib"); 
 
 			//delete old unused directories
-			exec("rm -rf /data/data/com.octave/bin");
-			exec("rm -rf /data/data/com.octave/mylib");
-			exec("rm -rf /data/data/com.octave/unzippedFiles");
+			exec("rm -rf /data/data/" + mPrefix + "/bin");
+			exec("rm -rf /data/data/" + mPrefix + "/mylib");
+			exec("rm -rf /data/data/" + mPrefix + "/unzippedFiles");
 
 			//delete freeRoot to get a clean update
-			exec("rm -rf /data/data/com.octave/freeRoot");
+			exec("rm -rf /data/data/" + mPrefix + "/freeRoot");
 
-			File tmpDir = new File("/data/data/com.octave/tmp/");
+			File tmpDir = new File("/data/data/" + mPrefix + "/tmp/");
 			if (tmpDir.exists()==false) { 
 				tmpDir.mkdir();
 			}
-			exec("chmod 0777 /data/data/com.octave/tmp");
+			exec("chmod 0777 /data/data/" + mPrefix + "/tmp");
 
 		}
-		
+
 		installPackage("com.octave");
 		installPackage("com.octave.signal");
 		installPackage("com.octave.mapping");
@@ -219,13 +229,17 @@ public class octaveMain extends Activity {
 		installPackage("com.octave.optim");
 		installPackage("com.octave.statistics");
 		installPackage("com.octave.specfun");
-		
+		if (mAskForDonation == false) {
+			installPackage("com.octave.ode");
+			installPackage("com.octave.financial");
+		}
+
 		goMeasure();
 	}
 
 	private void installPackage(String packageName) {
 		String packageTopStr = "/data/data/"+packageName+"/lib/";
-		
+
 		mErrOcc = false;
 
 		if (updateRequired(packageName)) {
@@ -235,12 +249,12 @@ public class octaveMain extends Activity {
 			processLinkFile(packageTopStr+"lib__install_file.so");
 			//create all links needed
 			processLinkFile(packageTopStr+"lib__install_link.so");
-			
+
 			if (mErrOcc == false) {
 				createVersionFile(packageName);
 			}
 		}
-		
+
 	}
 
 	public boolean deleteDir(File dir) {
@@ -269,6 +283,7 @@ public class octaveMain extends Activity {
 			br = new BufferedReader(new FileReader(dirFile));
 			String line;
 			while ((line = br.readLine()) != null) {
+				line = line.replace("/data/data/com.octave/", "/data/data/" + mPrefix + "/");
 				createDir(line);
 			}
 			br.close();
@@ -288,6 +303,7 @@ public class octaveMain extends Activity {
 				if (tmpFile.exists()) {
 					tmpFile.delete();
 				}
+				line = line.replace("/data/data/com.octave/", "/data/data/" + mPrefix + "/");
 				exec("ln -s " + line);
 			}
 			br.close();
@@ -339,10 +355,8 @@ public class octaveMain extends Activity {
 		}
 	}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		File directory = new File("/data/data/com.octave/tmp");
+	public void cleanHouse() {
+		File directory = new File("/data/data/" + mPrefix + "/tmp");
 
 		// Get all files in directory
 		if (directory.exists()) {
@@ -357,10 +371,9 @@ public class octaveMain extends Activity {
 				}
 			}
 		}
-		finish();
 	}
 
-	final CharSequence[] mItemsShort={"Any amount via Paypal","Maybe Later"};
+	final CharSequence[] mItemsShort={"Get Tiny Utils","Donate $5","Donate $10","Donate $25","Donate $50","Donate $100","Maybe Later"};
 	private void askForDonation() {
 
 		this.runOnUiThread(new Runnable() {
@@ -369,16 +382,42 @@ public class octaveMain extends Activity {
 			public void run() {
 				AlertDialog.Builder builder=new AlertDialog.Builder(octaveMain.this);
 
-				builder.setTitle("Please consider supporting free SW for Android.").setItems(mItemsShort, new DialogInterface.OnClickListener() {
+				builder.setTitle("Please support free (as in speech) SW for Android by:").setItems(mItemsShort, new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
-						case 0: 
-							Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4JELWYF6CNHVU&lc=US&item_name=Corbin%20Champion%20Designs&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
-							startActivity(viewIntent);
-							break;	
+						case 0:
+							Intent goToMarket0 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=champion.tinyutils"));
+							startActivity(goToMarket0);
+							mHoldOff = true;
+							break;
 						case 1:
+							Intent goToMarket1 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate5"));
+							startActivity(goToMarket1);
+							mHoldOff = true;
+							break;
+						case 2:
+							Intent goToMarket2 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate10"));
+							startActivity(goToMarket2);
+							mHoldOff = true;
+							break;
+						case 3:
+							Intent goToMarket3 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate25"));
+							startActivity(goToMarket3);
+							mHoldOff = true;
+							break;
+						case 4:
+							Intent goToMarket4 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate50"));
+							startActivity(goToMarket4);
+							mHoldOff = true;
+							break;
+						case 5:
+							Intent goToMarket5 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate100"));
+							startActivity(goToMarket5);
+							mHoldOff = true;
+							break;
+						case 6:
 							Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
 							break;
 						}
@@ -394,21 +433,15 @@ public class octaveMain extends Activity {
 	}
 
 	private void launchATE() {
-		Intent i2 = new Intent("jackpal.androidterm.RUN_SCRIPT");
-		i2.addCategory(Intent.CATEGORY_DEFAULT);
-		i2.putExtra("jackpal.androidterm.iInitialCommand", "umask 000; export HOME="+mHome+"; cd /data/data/com.octave/; /data/data/com.octave/freeRoot/lib/ld-linux.so.3 --library-path /data/data/com.octave/freeRoot/lib:/data/data/com.octave/freeRoot/usr/local/lib /data/data/com.octave/freeRoot/usr/local/bin/octave");
-		try {
-			startActivity(i2);
-		} catch (ActivityNotFoundException e1) {
-			fireLongToast();
-			String packageName = "jackpal.androidterm";
-			Intent goToMarket = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id="+packageName));
-			startActivity(goToMarket);
-		} catch (SecurityException e2) {
-			fireLongToast();
-		}
+		mPd_ring.dismiss();
+		cleanHouse();
+		Intent termIntent = new Intent(octaveMain.this, jackpal.androidterm.RemoteInterface.class);
+		termIntent.addCategory(Intent.CATEGORY_DEFAULT);
+		termIntent.setAction("jackpal.androidterm.OPEN_NEW_WINDOW");
+		startActivity(termIntent);
+		finish();
 	}
-	
+
 	private boolean updateRequired(String packageName) {
 		String version;
 
@@ -420,7 +453,7 @@ public class octaveMain extends Activity {
 			return false;
 		}
 
-		File versionFile = new File("/data/data/com.octave/"+packageName+"."+version);
+		File versionFile = new File("/data/data/" + mPrefix + "/"+packageName+"."+version);
 
 		if (versionFile.exists()==false) {
 			return true;
@@ -428,7 +461,7 @@ public class octaveMain extends Activity {
 			return false;
 		}
 	}
-	
+
 	private void createVersionFile(String packageName) {
 		String version;
 
@@ -440,7 +473,7 @@ public class octaveMain extends Activity {
 			version = "?";
 		}
 
-		File versionFile = new File("/data/data/com.octave/"+packageName+"."+version);
+		File versionFile = new File("/data/data/" + mPrefix + "/"+packageName+"."+version);
 
 		if (versionFile.exists()==false) {
 			try {

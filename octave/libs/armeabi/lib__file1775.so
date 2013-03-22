@@ -17,11 +17,17 @@ if (exist("/data/data/com.droidplot/share/gnuplot/4.6/gnuplotrc") == 2)
    set(0,"defaulttextfontname","LiberationMono-Regular");
    register_graphics_toolkit("gnuplot");
 else
-   printf("plotting non-functional, consider getting droidplot");
+   printf("Plotting non-functional, consider getting droidplot from the Play Store.\n");
 endif
+found_packages = 0;
 if (exist("/data/data/com.octave/freeRoot/usr/local/lib/octave/packages/") == 7) 
    addpath(genpath("/data/data/com.octave/freeRoot/usr/local/lib/octave/packages/"));
+   found_packages = 1;
 endif
 if (exist("/data/data/com.octave/freeRoot/usr/local/share/octave/packages/") == 7) 
    addpath(genpath("/data/data/com.octave/freeRoot/usr/local/share/octave/packages/"));
+   found_packages = 1;
+endif
+if (found_packages == 0) 
+   printf("No add-on packages found, get them from the Play Store.\n");
 endif
