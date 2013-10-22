@@ -1,0 +1,7 @@
+autoload ("odekdi", "dldsolver.oct");
+autoload ("odebda", "dldsolver.oct");
+autoload ("odebdi", "dldsolver.oct");
+autoload ("ode5r",  "dldsolver.oct");
+autoload ("ode2r",  "dldsolver.oct");
+autoload ("oders",  "dldsolver.oct");
+autoload ("odesx",  "dldsolver.oct");

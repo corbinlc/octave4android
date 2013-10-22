@@ -229,10 +229,8 @@ public class octaveMain extends Activity {
 		installPackage("com.octave.optim");
 		installPackage("com.octave.statistics");
 		installPackage("com.octave.specfun");
-		if (mAskForDonation == false) {
-			installPackage("com.octave.ode");
-			installPackage("com.octave.financial");
-		}
+		installPackage("com.octave.ode");
+		installPackage("com.octave.financial");
 
 		goMeasure();
 	}
@@ -373,7 +371,7 @@ public class octaveMain extends Activity {
 		}
 	}
 
-	final CharSequence[] mItemsShort={"Get Tiny Utils","Donate $5","Donate $10","Donate $25","Donate $50","Donate $100","Maybe Later"};
+	final CharSequence[] mItemsShort={"Get GNURoot", "Get Tiny Utils","Donate $5","Donate $10","Donate $25","Donate $50","Donate $100","Maybe Later"};
 	private void askForDonation() {
 
 		this.runOnUiThread(new Runnable() {
@@ -388,36 +386,41 @@ public class octaveMain extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case 0:
-							Intent goToMarket0 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=champion.tinyutils"));
+							Intent goToMarket0 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=champion.gnuroot"));
 							startActivity(goToMarket0);
 							mHoldOff = true;
 							break;
 						case 1:
-							Intent goToMarket1 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate5"));
+							Intent goToMarket1 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=champion.tinyutils"));
 							startActivity(goToMarket1);
 							mHoldOff = true;
 							break;
 						case 2:
-							Intent goToMarket2 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate10"));
+							Intent goToMarket2 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate5"));
 							startActivity(goToMarket2);
 							mHoldOff = true;
 							break;
 						case 3:
-							Intent goToMarket3 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate25"));
+							Intent goToMarket3 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate10"));
 							startActivity(goToMarket3);
 							mHoldOff = true;
 							break;
 						case 4:
-							Intent goToMarket4 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate50"));
+							Intent goToMarket4 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate25"));
 							startActivity(goToMarket4);
 							mHoldOff = true;
 							break;
 						case 5:
-							Intent goToMarket5 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate100"));
+							Intent goToMarket5 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate50"));
 							startActivity(goToMarket5);
 							mHoldOff = true;
 							break;
 						case 6:
+							Intent goToMarket6 = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=com.octave.donate100"));
+							startActivity(goToMarket6);
+							mHoldOff = true;
+							break;
+						case 7:
 							Toast.makeText(getApplicationContext(), "Thanks for considering this!", Toast.LENGTH_LONG).show();
 							break;
 						}

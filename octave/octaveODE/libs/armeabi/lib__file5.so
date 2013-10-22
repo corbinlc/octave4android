@@ -1,0 +1,657 @@
+@deftypefn  {Function File} {[@var{}] =} ode23 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode23 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode23 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff ordinary differential equations (non--stiff ODEs) or non--stiff differential algebraic equations (non--stiff DAEs) with the well known explicit Runge--Kutta method of order (2,3).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of ODEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of ODEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example, solve an anonymous implementation of the Van der Pol equation
+
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ("RelTol", 1e-3, "AbsTol", 1e-3, \
+         "NormControl", "on", "OutputFcn", @@odeplot);
+ode23 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode23d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode23d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode23d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff delay differential equations (non--stiff DDEs) with a modified version of the well known explicit Runge--Kutta method of order (2,3).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of DDEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{lags} is a double vector that describes the lags of time, @var{hist} is a double matrix and describes the history of the DDEs, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+In other words, this function will solve a problem of the form
+@example
+dy/dt = fun (t, y(t), y(t-lags(1), y(t-lags(2), @dots{})))
+y(slot(1)) = init
+y(slot(1)-lags(1)) = hist(1), y(slot(1)-lags(2)) = hist(2), @dots{} 
+@end example
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of DDEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example:
+@itemize @minus
+@item
+the following code solves an anonymous implementation of a chaotic behavior
+
+@example
+fcao = @@(vt, vy, vz) [2 * vz / (1 + vz^9.65) - vy];
+
+vopt = odeset ("NormControl", "on", "RelTol", 1e-3);
+vsol = ode23d (fcao, [0, 100], 0.5, 2, 0.5, vopt);
+
+vlag = interp1 (vsol.x, vsol.y, vsol.x - 2);
+plot (vsol.y, vlag); legend ("fcao (t,y,z)");
+@end example
+
+@item
+to solve the following problem with two delayed state variables
+
+@example
+d y1(t)/dt = -y1(t)
+d y2(t)/dt = -y2(t) + y1(t-5)
+d y3(t)/dt = -y3(t) + y2(t-10)*y1(t-10)
+@end example
+
+one might do the following
+
+@example
+function f = fun (t, y, yd)
+f(1) = -y(1);                   %% y1' = -y1(t)
+f(2) = -y(2) + yd(1,1);         %% y2' = -y2(t) + y1(t-lags(1))
+f(3) = -y(3) + yd(2,2)*yd(1,2); %% y3' = -y3(t) + y2(t-lags(2))*y1(t-lags(2))
+endfunction
+T = [0,20]
+res = ode23d (@@fun, T, [1;1;1], [5, 10], ones (3,2));
+@end example
+
+@end itemize
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode45 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode45 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode45 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff ordinary differential equations (non--stiff ODEs) or non--stiff differential algebraic equations (non--stiff DAEs) with the well known explicit Runge--Kutta method of order (4,5).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of ODEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of ODEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example, solve an anonymous implementation of the Van der Pol equation
+
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ("RelTol", 1e-3, "AbsTol", 1e-3, \
+         "NormControl", "on", "OutputFcn", @@odeplot);
+ode45 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode45d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode45d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode45d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff delay differential equations (non--stiff DDEs) with a modified version of the well known explicit Runge--Kutta method of order (4,5).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of DDEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{lags} is a double vector that describes the lags of time, @var{hist} is a double matrix and describes the history of the DDEs, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+In other words, this function will solve a problem of the form
+@example
+dy/dt = fun (t, y(t), y(t-lags(1), y(t-lags(2), @dots{})))
+y(slot(1)) = init
+y(slot(1)-lags(1)) = hist(1), y(slot(1)-lags(2)) = hist(2), @dots{} 
+@end example
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of DDEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example:
+@itemize @minus
+@item
+the following code solves an anonymous implementation of a chaotic behavior
+
+@example
+fcao = @@(vt, vy, vz) [2 * vz / (1 + vz^9.65) - vy];
+
+vopt = odeset ("NormControl", "on", "RelTol", 1e-3);
+vsol = ode45d (fcao, [0, 100], 0.5, 2, 0.5, vopt);
+
+vlag = interp1 (vsol.x, vsol.y, vsol.x - 2);
+plot (vsol.y, vlag); legend ("fcao (t,y,z)");
+@end example
+
+@item
+to solve the following problem with two delayed state variables
+
+@example
+d y1(t)/dt = -y1(t)
+d y2(t)/dt = -y2(t) + y1(t-5)
+d y3(t)/dt = -y3(t) + y2(t-10)*y1(t-10)
+@end example
+
+one might do the following
+
+@example
+function f = fun (t, y, yd)
+f(1) = -y(1);                   %% y1' = -y1(t)
+f(2) = -y(2) + yd(1,1);         %% y2' = -y2(t) + y1(t-lags(1))
+f(3) = -y(3) + yd(2,2)*yd(1,2); %% y3' = -y3(t) + y2(t-lags(2))*y1(t-lags(2))
+endfunction
+T = [0,20]
+res = ode45d (@@fun, T, [1;1;1], [5, 10], ones (3,2));
+@end example
+
+@end itemize
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode54 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode54 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode54 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff ordinary differential equations (non--stiff ODEs) or non--stiff differential algebraic equations (non--stiff DAEs) with the well known explicit Runge--Kutta method of order (5,4).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of ODEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of ODEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example, solve an anonymous implementation of the Van der Pol equation
+
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ("RelTol", 1e-3, "AbsTol", 1e-3, \
+         "NormControl", "on", "OutputFcn", @@odeplot);
+ode54 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode54d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode54d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode54d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff delay differential equations (non--stiff DDEs) with a modified version of the well known explicit Runge--Kutta method of order (2,3).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of DDEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{lags} is a double vector that describes the lags of time, @var{hist} is a double matrix and describes the history of the DDEs, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+In other words, this function will solve a problem of the form
+@example
+dy/dt = fun (t, y(t), y(t-lags(1), y(t-lags(2), @dots{})))
+y(slot(1)) = init
+y(slot(1)-lags(1)) = hist(1), y(slot(1)-lags(2)) = hist(2), @dots{} 
+@end example
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of DDEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example:
+@itemize @minus
+@item
+the following code solves an anonymous implementation of a chaotic behavior
+
+@example
+fcao = @@(vt, vy, vz) [2 * vz / (1 + vz^9.65) - vy];
+
+vopt = odeset ("NormControl", "on", "RelTol", 1e-3);
+vsol = ode54d (fcao, [0, 100], 0.5, 2, 0.5, vopt);
+
+vlag = interp1 (vsol.x, vsol.y, vsol.x - 2);
+plot (vsol.y, vlag); legend ("fcao (t,y,z)");
+@end example
+
+@item
+to solve the following problem with two delayed state variables
+
+@example
+d y1(t)/dt = -y1(t)
+d y2(t)/dt = -y2(t) + y1(t-5)
+d y3(t)/dt = -y3(t) + y2(t-10)*y1(t-10)
+@end example
+
+one might do the following
+
+@example
+function f = fun (t, y, yd)
+f(1) = -y(1);                   %% y1' = -y1(t)
+f(2) = -y(2) + yd(1,1);         %% y2' = -y2(t) + y1(t-lags(1))
+f(3) = -y(3) + yd(2,2)*yd(1,2); %% y3' = -y3(t) + y2(t-lags(2))*y1(t-lags(2))
+endfunction
+T = [0,20]
+res = ode54d (@@fun, T, [1;1;1], [5, 10], ones (3,2));
+@end example
+
+@end itemize
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode78 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode78 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode78 (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff ordinary differential equations (non--stiff ODEs) or non--stiff differential algebraic equations (non--stiff DAEs) with the well known explicit Runge--Kutta method of order (7,8).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of ODEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of ODEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example, solve an anonymous implementation of the Van der Pol equation
+
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ("RelTol", 1e-3, "AbsTol", 1e-3, \
+         "NormControl", "on", "OutputFcn", @@odeplot);
+ode78 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} ode78d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} ode78d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} ode78d (@var{@@fun}, @var{slot}, @var{init}, @var{lags}, @var{hist}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of non--stiff delay differential equations (non--stiff DDEs) with a modified version of the well known explicit Runge--Kutta method of order (7,8).
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of DDEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{lags} is a double vector that describes the lags of time, @var{hist} is a double matrix and describes the history of the DDEs, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+In other words, this function will solve a problem of the form
+@example
+dy/dt = fun (t, y(t), y(t-lags(1), y(t-lags(2), @dots{})))
+y(slot(1)) = init
+y(slot(1)-lags(1)) = hist(1), y(slot(1)-lags(2)) = hist(2), @dots{} 
+@end example
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of DDEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example:
+@itemize @minus
+@item
+the following code solves an anonymous implementation of a chaotic behavior
+
+@example
+fcao = @@(vt, vy, vz) [2 * vz / (1 + vz^9.65) - vy];
+
+vopt = odeset ("NormControl", "on", "RelTol", 1e-3);
+vsol = ode78d (fcao, [0, 100], 0.5, 2, 0.5, vopt);
+
+vlag = interp1 (vsol.x, vsol.y, vsol.x - 2);
+plot (vsol.y, vlag); legend ("fcao (t,y,z)");
+@end example
+
+@item
+to solve the following problem with two delayed state variables
+
+@example
+d y1(t)/dt = -y1(t)
+d y2(t)/dt = -y2(t) + y1(t-5)
+d y3(t)/dt = -y3(t) + y2(t-10)*y1(t-10)
+@end example
+
+one might do the following
+
+@example
+function f = fun (t, y, yd)
+f(1) = -y(1);                   %% y1' = -y1(t)
+f(2) = -y(2) + yd(1,1);         %% y2' = -y2(t) + y1(t-lags(1))
+f(3) = -y(3) + yd(2,2)*yd(1,2); %% y3' = -y3(t) + y2(t-lags(2))*y1(t-lags(2))
+endfunction
+T = [0,20]
+res = ode78d (@@fun, T, [1;1;1], [5, 10], ones (3,2));
+@end example
+
+@end itemize
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{}] =} odebwe (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{sol}] =} odebwe (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+@deftypefnx {Command} {[@var{t}, @var{y}, [@var{xe}, @var{ye}, @var{ie}]] =} odebwe (@var{@@fun}, @var{slot}, @var{init}, [@var{opt}], [@var{par1}, @var{par2}, @dots{}])
+
+This function file can be used to solve a set of stiff ordinary differential equations (stiff ODEs) or stiff differential algebraic equations (stiff DAEs) with the Backward Euler method.
+
+If this function is called with no return argument then plot the solution over time in a figure window while solving the set of ODEs that are defined in a function and specified by the function handle @var{@@fun}. The second input argument @var{slot} is a double vector that defines the time slot, @var{init} is a double vector that defines the initial values of the states, @var{opt} can optionally be a structure array that keeps the options created with the command @command{odeset} and @var{par1}, @var{par2}, @dots{} can optionally be other input arguments of any type that have to be passed to the function defined by @var{@@fun}.
+
+If this function is called with one return argument then return the solution @var{sol} of type structure array after solving the set of ODEs. The solution @var{sol} has the fields @var{x} of type double column vector for the steps chosen by the solver, @var{y} of type double column vector for the solutions at each time step of @var{x}, @var{solver} of type string for the solver name and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector that keep the informations of the event function if an event function handle is set in the option argument @var{opt}.
+
+If this function is called with more than one return argument then return the time stamps @var{t}, the solution values @var{y} and optionally the extended time stamp information @var{xe}, the extended solution information @var{ye} and the extended index information @var{ie} all of type double column vector.
+
+For example, solve an anonymous implementation of the Van der Pol equation
+
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+vjac = @@(vt,vy) [0, 1; -1 - 2 * vy(1) * vy(2), 1 - vy(1)^2];
+vopt = odeset ("RelTol", 1e-3, "AbsTol", 1e-3, \
+         "NormControl", "on", "OutputFcn", @@odeplot, \
+         "Jacobian",vjac);
+odebwe (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{}] =} odeexamples (@var{})
+Open the differential equations examples menu and allow the user to select a submenu of ODE, DAE, IDE or DDE examples.
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{value}] =} odeget (@var{odestruct}, @var{option}, [@var{default}])
+@deftypefnx {Command} {[@var{values}] =} odeget (@var{odestruct}, @{@var{opt1}, @var{opt2}, @dots{}@}, [@{@var{def1}, @var{def2}, @dots{}@}])
+
+If this function is called with two input arguments and the first input argument @var{odestruct} is of type structure array and the second input argument @var{option} is of type string then return the option value @var{value} that is specified by the option name @var{option} in the OdePkg option structure @var{odestruct}. Optionally if this function is called with a third input argument then return the default value @var{default} if @var{option} is not set in the structure @var{odestruct}.
+
+If this function is called with two input arguments and the first input argument @var{odestruct} is of type structure array and the second input argument @var{option} is of type cell array of strings then return the option values @var{values} that are specified by the option names @var{opt1}, @var{opt2}, @dots{} in the OdePkg option structure @var{odestruct}. Optionally if this function is called with a third input argument of type cell array then return the default value @var{def1} if @var{opt1} is not set in the structure @var{odestruct}, @var{def2} if @var{opt2} is not set in the structure @var{odestruct}, @dots{}
+
+Run examples with the command
+@example
+demo odeget
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{ret}] =} odephas2 (@var{t}, @var{y}, @var{flag})
+
+Open a new figure window and plot the first result from the variable @var{y} that is of type double column vector over the second result from the variable @var{y} while solving. The types and the values of the input parameter @var{t} and the output parameter @var{ret} depend on the input value @var{flag} that is of type string. If @var{flag} is
+@table @option
+@item  @code{"init"}
+then @var{t} must be a double column vector of length 2 with the first and the last time step and nothing is returned from this function,
+@item  @code{""}
+then @var{t} must be a double scalar specifying the actual time step and the return value is false (resp. value 0) for 'not stop solving',
+@item  @code{"done"}
+then @var{t} must be a double scalar specifying the last time step and nothing is returned from this function.
+@end table
+
+This function is called by a OdePkg solver function if it was specified in an OdePkg options structure with the @command{odeset}. This function is an OdePkg internal helper function therefore it should never be necessary that this function is called directly by a user. There is only little error detection implemented in this function file to achieve the highest performance.
+
+For example, solve an anonymous implementation of the "Van der Pol" equation and display the results while solving in a 2D plane
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ('OutputFcn', @@odephas2, 'RelTol', 1e-6);
+vsol = ode45 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{ret}] =} odephas3 (@var{t}, @var{y}, @var{flag})
+
+Open a new figure window and plot the first result from the variable @var{y} that is of type double column vector over the second and the third result from the variable @var{y} while solving. The types and the values of the input parameter @var{t} and the output parameter @var{ret} depend on the input value @var{flag} that is of type string. If @var{flag} is
+@table @option
+@item  @code{"init"}
+then @var{t} must be a double column vector of length 2 with the first and the last time step and nothing is returned from this function,
+@item  @code{""}
+then @var{t} must be a double scalar specifying the actual time step and the return value is false (resp. value 0) for 'not stop solving',
+@item  @code{"done"}
+then @var{t} must be a double scalar specifying the last time step and nothing is returned from this function.
+@end table
+
+This function is called by a OdePkg solver function if it was specified in an OdePkg options structure with the @command{odeset}. This function is an OdePkg internal helper function therefore it should never be necessary that this function is called directly by a user. There is only little error detection implemented in this function file to achieve the highest performance.
+
+For example, solve the "Lorenz attractor" and display the results while solving in a 3D plane
+@example
+function vyd = florenz (vt, vx)
+  vyd = [10 * (vx(2) - vx(1));
+         vx(1) * (28 - vx(3));
+         vx(1) * vx(2) - 8/3 * vx(3)];
+endfunction
+
+vopt = odeset ('OutputFcn', @@odephas3); 
+vsol = ode23 (@@florenz, [0:0.01:7.5], [3 15 1], vopt);
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{}] =} odepkg ()
+
+OdePkg is part of the GNU Octave Repository (the Octave--Forge project). The package includes commands for setting up various options, output functions etc. before solving a set of differential equations with the solver functions that are also included. At this time OdePkg is under development with the main target to make a package that is mostly compatible to proprietary solver products.
+
+If this function is called without any input argument then open the OdePkg tutorial in the Octave window. The tutorial can also be opened with the following command
+
+@example
+doc odepkg
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{sol}] =} odepkg_event_handle (@var{@@fun}, @var{time}, @var{y}, @var{flag}, [@var{par1}, @var{par2}, @dots{}])
+
+Return the solution of the event function that is specified as the first input argument @var{@@fun} in form of a function handle. The second input argument @var{time} is of type double scalar and specifies the time of the event evaluation, the third input argument @var{y} either is of type double column vector (for ODEs and DAEs) and specifies the solutions or is of type cell array (for IDEs and DDEs) and specifies the derivatives or the history values, the third input argument @var{flag} is of type string and can be of the form 
+@table @option
+@item  @code{"init"}
+then initialize internal persistent variables of the function @command{odepkg_event_handle} and return an empty cell array of size 4,
+@item  @code{"calc"}
+then do the evaluation of the event function and return the solution @var{sol} as type cell array of size 4,
+@item  @code{"done"}
+then cleanup internal variables of the function @command{odepkg_event_handle} and return an empty cell array of size 4.
+@end table
+Optionally if further input arguments @var{par1}, @var{par2}, @dots{} of any type are given then pass these parameters through @command{odepkg_event_handle} to the event function.
+
+This function is an OdePkg internal helper function therefore it should never be necessary that this function is called directly by a user. There is only little error detection implemented in this function file to achieve the highest performance.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{}] =} odepkg_examples_dae (@var{})
+Open the DAE examples menu and allow the user to select a demo that will be evaluated.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{}] =} odepkg_examples_dde (@var{})
+Open the DDE examples menu and allow the user to select a demo that will be evaluated.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{}] =} odepkg_examples_ide (@var{})
+Open the IDE examples menu and allow the user to select a demo that will be evaluated.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{}] =} odepkg_examples_ode (@var{})
+Open the ODE examples menu and allow the user to select a demo that will be evaluated.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{newstruct}] =} odepkg_structure_check (@var{oldstruct}, [@var{"solver"}])
+
+If this function is called with one input argument of type structure array then check the field names and the field values of the OdePkg structure @var{oldstruct} and return the structure as @var{newstruct} if no error is found. Optionally if this function is called with a second input argument @var{"solver"} of type string taht specifies the name of a valid OdePkg solver then a higher level error detection is performed. The function does not modify any of the field names or field values but terminates with an error if an invalid option or value is found.
+
+This function is an OdePkg internal helper function therefore it should never be necessary that this function is called directly by a user. There is only little error detection implemented in this function file to achieve the highest performance.
+
+Run examples with the command
+@example
+demo odepkg_structure_check
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{mescd}] =} odepkg_testsuite_calcmescd (@var{solution}, @var{reference}, @var{abstol}, @var{reltol})
+
+If this function is called with four input arguments of type double scalar or column vector then return a normalized value for the minimum number of correct digits @var{mescd} that is calculated from the solution at the end of an integration interval @var{solution} and a set of reference values @var{reference}. The input arguments @var{abstol} and @var{reltol} are used to calculate a reference solution that depends on the relative and absolute error tolerances.
+
+Run examples with the command
+@example
+demo odepkg_testsuite_calcmescd
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{scd}] =} odepkg_testsuite_calcscd (@var{solution}, @var{reference}, @var{abstol}, @var{reltol})
+
+If this function is called with four input arguments of type double scalar or column vector then return a normalized value for the minimum number of correct digits @var{scd} that is calculated from the solution at the end of an integration interval @var{solution} and a set of reference values @var{reference}. The input arguments @var{abstol} and @var{reltol} are unused but present because of compatibility to the function @command{odepkg_testsuite_calcmescd}.
+
+Run examples with the command
+@example
+demo odepkg_testsuite_calcscd
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_chemakzo (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return a cell array @var{solution} with performance informations about the chemical AKZO Nobel testsuite of differential algebraic equations after solving (DAE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_chemakzo
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_hires (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return a cell array @var{solution} with performance informations about the HIRES testsuite of ordinary differential equations after solving (ODE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_hires
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_implakzo (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return a cell array @var{solution} with performance informations about the chemical AKZO Nobel testsuite of implicit differential algebraic equations after solving (IDE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_implakzo
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_implrober (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return a cell array @var{solution} with performance informations about the implicit form of the modified ROBERTSON testsuite of implicit differential algebraic equations after solving (IDE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_implrober
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_oregonator (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return a cell array @var{solution} with performance informations about the OREGONATOR testsuite of ordinary differential equations after solving (ODE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_oregonator
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_pollution (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return the cell array @var{solution} with performance informations about the POLLUTION testsuite of ordinary differential equations after solving (ODE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_pollution
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_robertson (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return a cell array @var{solution} with performance informations about the modified ROBERTSON testsuite of differential algebraic equations after solving (DAE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_robertson
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{solution}] =} odepkg_testsuite_transistor (@var{@@solver}, @var{reltol})
+
+If this function is called with two input arguments and the first input argument @var{@@solver} is a function handle describing an OdePkg solver and the second input argument @var{reltol} is a double scalar describing the relative error tolerance then return the cell array @var{solution} with performance informations about the TRANSISTOR testsuite of differential algebraic equations after solving (DAE--test).
+
+Run examples with the command
+@example
+demo odepkg_testsuite_transistor
+@end example
+
+This function has been ported from the "Test Set for IVP solvers" which is developed by the INdAM Bari unit project group "Codes and Test Problems for Differential Equations", coordinator F. Mazzia.
+@end deftypefn
+
+@deftypefn {Function File} {[@var{ret}] =} odeplot (@var{t}, @var{y}, @var{flag})
+
+Open a new figure window and plot the results from the variable @var{y} of type column vector over time while solving. The types and the values of the input parameter @var{t} and the output parameter @var{ret} depend on the input value @var{flag} that is of type string. If @var{flag} is
+@table @option
+@item  @code{"init"}
+then @var{t} must be a double column vector of length 2 with the first and the last time step and nothing is returned from this function,
+@item  @code{""}
+then @var{t} must be a double scalar specifying the actual time step and the return value is false (resp. value 0) for 'not stop solving',
+@item  @code{"done"}
+then @var{t} must be a double scalar specifying the last time step and nothing is returned from this function.
+@end table
+
+This function is called by a OdePkg solver function if it was specified in an OdePkg options structure with the @command{odeset}. This function is an OdePkg internal helper function therefore it should never be necessary that this function is called directly by a user. There is only little error detection implemented in this function file to achieve the highest performance.
+
+For example, solve an anonymous implementation of the "Van der Pol" equation and display the results while solving
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ('OutputFcn', @@odeplot, 'RelTol', 1e-6);
+vsol = ode45 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn {Function File} {[@var{ret}] =} odeprint (@var{t}, @var{y}, @var{flag})
+
+Display the results of the set of differential equations in the Octave window while solving. The first column of the screen output shows the actual time stamp that is given with the input arguemtn @var{t}, the following columns show the results from the function evaluation that are given by the column vector @var{y}. The types and the values of the input parameter @var{t} and the output parameter @var{ret} depend on the input value @var{flag} that is of type string. If @var{flag} is
+@table @option
+@item  @code{"init"}
+then @var{t} must be a double column vector of length 2 with the first and the last time step and nothing is returned from this function,
+@item  @code{""}
+then @var{t} must be a double scalar specifying the actual time step and the return value is false (resp. value 0) for 'not stop solving',
+@item  @code{"done"}
+then @var{t} must be a double scalar specifying the last time step and nothing is returned from this function.
+@end table
+
+This function is called by a OdePkg solver function if it was specified in an OdePkg options structure with the @command{odeset}. This function is an OdePkg internal helper function therefore it should never be necessary that this function is called directly by a user. There is only little error detection implemented in this function file to achieve the highest performance.
+
+For example, solve an anonymous implementation of the "Van der Pol" equation and print the results while solving
+@example
+fvdb = @@(vt,vy) [vy(2); (1 - vy(1)^2) * vy(2) - vy(1)];
+
+vopt = odeset ('OutputFcn', @@odeprint, 'RelTol', 1e-6);
+vsol = ode45 (fvdb, [0 20], [2 0], vopt);
+@end example
+@end deftypefn
+
+@deftypefn  {Function File} {[@var{odestruct}] =} odeset ()
+@deftypefnx {Command}  {[@var{odestruct}] =} odeset (@var{"field1"}, @var{value1}, @var{"field2"}, @var{value2}, @dots{})
+@deftypefnx {Command}  {[@var{odestruct}] =} odeset (@var{oldstruct}, @var{"field1"}, @var{value1}, @var{"field2"}, @var{value2}, @dots{})
+@deftypefnx {Command}  {[@var{odestruct}] =} odeset (@var{oldstruct}, @var{newstruct})
+
+If this function is called without an input argument then return a new OdePkg options structure array that contains all the necessary fields and sets the values of all fields to default values.
+
+If this function is called with string input arguments @var{"field1"}, @var{"field2"}, @dots{} identifying valid OdePkg options then return a new OdePkg options structure with all necessary fields and set the values of the fields @var{"field1"}, @var{"field2"}, @dots{} to the values @var{value1}, @var{value2}, @dots{}
+
+If this function is called with a first input argument @var{oldstruct} of type structure array then overwrite all values of the options @var{"field1"}, @var{"field2"}, @dots{} of the structure @var{oldstruct} with new values @var{value1}, @var{value2}, @dots{} and return the modified structure array.
+
+If this function is called with two input argumnets @var{oldstruct} and @var{newstruct} of type structure array then overwrite all values in the fields from the structure @var{oldstruct} with new values of the fields from the structure @var{newstruct}. Empty values of @var{newstruct} will not overwrite values in @var{oldstruct}.
+
+For a detailed explanation about valid fields and field values in an OdePkg structure aaray have a look at the @file{odepkg.pdf}, Section 'ODE/DAE/IDE/DDE options' or run the command @command{doc odepkg} to open the tutorial.
+
+Run examples with the command
+@example
+demo odeset
+@end example
+@end deftypefn
+
