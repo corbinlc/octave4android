@@ -1,0 +1,16 @@
+isstable (sys, tol)     #
+
+feedback (sys)          # equivalent to feedback (sys, eye (size (sys)))
+feedback (sys, "+")     # equivalent to feedback (sys, eye (size (sys)), +1)
+
+H = sys(w)              # equivalent to H = freqresp (sys, w) where w is a frequency vector
+
+place (sys, p, alpha)   # If parameter alpha is specified, poles with real parts
+place (a, b, p, alpha)  # (continuous time) or moduli (discrete time) below alpha
+                        # are left untouched.
+
+sminreal (sys, tol)     # Optional tolerance for controllability and observability.
+                        # Entries of the state-space matrices whose moduli are less or
+                        # equal to TOL are assumed to be zero. Default value is 0.
+
+frd (sys)               # calculate interesting frequency range by the zeros and poles of SYS.

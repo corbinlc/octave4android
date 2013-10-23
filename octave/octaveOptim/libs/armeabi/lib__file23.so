@@ -1,0 +1,203 @@
+Copyright (C) 2010 Olaf Till <olaf.till@uni-jena.de>
+
+License terms:
+
+You can redistribute and/or modify this text under the terms of the
+GNU General Public License as published by the Free Software
+Foundation; either version 3 of the License, or (at your option) any
+later version.
+
+This text is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this text; If not, see <http://www.gnu.org/licenses/>.
+
+###################################################################
+
+
+Optimization Interfaces
+
+
+It is planned (at least by me) to have common front-ends for some
+optimization backends. This document should describe some of the
+interfaces. (While frontends are supposed to honour options set by
+optimset, keeping Matlab compatibility with respect to option names,
+but possibly using additional options (not present in Matlab), the
+interface to the backend does not pass the options as returned by
+optimset, but uses different variables.)
+
+This document is possibly not up-to-date.
+
+
+
+
+The interface of backends in fitting of residuals (e.g. curve fitting)
+is (example implementation is in __nonlin_residmin__.m):
+
+function [p, resid, cvg, outp] = __backend_name__ (f, pin, hook)
+
+where in the arguments
+
+'f' is a handle of the residual function, accepting as a single
+argument the vector of optimized paramters, and returning a matrix of
+residuals; (constant variables as, e.g., independents and observed
+values in curve fitting, can be provided by the front-end if 'f' is an
+anonymous function),
+
+'pin' is the vector of initial parameters, and
+
+'hook' is a structure with additional information; some fields of
+'hook' may be not obligatory, and additional fields may be defined in
+the future (the fields will be described below),
+
+and in the returned values
+
+'p' is the vector of computed parameters,
+
+'resid' are the residuals for the result,
+
+'cvg' is a flag (described below) characterizing the result, and
+
+'outp' is a structure (described below) with additional information;
+some fields of 'outp' may not always be present, and additional fields
+may be defined in the future.
+
+
+The structure 'hook' can have the following fields:
+
+(Constraints are violated if constraint functions return vector
+elements which belong to inequality constraints and are smaller than
+zero or a small positive value, or vector elements which belong to
+equality constraints and have an absolute value larger than or equal
+to a small positive value.)
+
+'mc' (required): matrix (possibly empty) of the function "mc.' *
+parameters + vc" of linear constraints,
+
+'vc' (required): vector (possibly empty) of the function "mc.' *
+parameters + vc" of linear constraints,
+
+If bounds have been specified, they are contained in 'mc' and 'vc'
+_before_ all other linear constraints.
+
+'n_gencstr' (required): number of general constraints (except the
+linear constraints given by 'mc' and 'vc',
+
+'f_cstr' (required): handle of function of all constraints, accepting
+as arguments the vector of parameters and a logical index of
+constraints, and returning a vector of constraint values, the linear
+constraints being the first elements; if no second argument is given,
+the function returnes the vector of all constraints; if a second
+argument is given, only the values of the indicated constraints are
+returned (possibly sparing computation of the others),
+
+'eq_idx' (required): logical index of equality constraints (as opposed
+to inequality constraints) within the vector of all constraints
+returned by 'f_cstr' with an index of all true as second argument,
+
+'df_cstr' (required): handle of function for jacobian of all
+constraints, accepting as arguments the vector of parameters, a
+logical index of constraints, and a structure 'dfdp_hook' (described
+below) with additional information; the returned jacobian only
+contains rows for those constraints indicated by the logical vector,
+
+'bounds' (required): 2-column matrix with bounds, one row per
+parameter, lacking bounds are indicated by -Inf or Inf, respectively;
+each bound (except -Inf or Inf) is also contained in 'mc' and 'vc'
+above; all (bounds(:, 1) <= bounds(:, 2)) is guaranteed, but any
+(bounds(:, 1) == bounds(:, 2)) is possible,
+
+'pin_cstr' (required): structure with values of constraints (possibly
+empty vectors) for initial parameters, field
+'inequ.lin_except_bounds': linear inequality constraints except
+bounds, field 'inequ.gen': general inequality constraints, field
+'equ.lin' linear equality constraints, field 'equ.gen' general
+constraints, (so backend can decide what to do if initial parameters
+violate constraints),
+
+'f_pin' (required): returned value of f (pin),
+
+'dfdp' (required): handle of function returning the jacobian of the
+residual function, accepting as arguments the vector of parameters and
+a structure 'dfdp_hook' (described below) with additional information,
+
+'dfdp_pin' (optional): returned value of dfdp for initial parameters
+and dfdp_hook with fields as settable by the front end; may be
+different from what the backend would compute, but might be used by
+the backend; could be useful if user requests checks of dfdp return
+value, as suggested by some existing Matlab optimset option --- these
+checks can be done better in the frontend,
+
+'cpiv' (required): handle of function for complementary pivoting, the
+interface is not yet documented here and might change, for an example
+see "cpiv_bard.m" and its usage by "leasqr.m",
+
+'max_fract_change' (required, elements possibly NA): column vector of
+maximum fractional changes in parameters between iterations, Inf for
+unlimited,
+
+'fract_prec' (required, elements possibly NA): column vector of
+desired fractional precisions in parameter estimates (0 for disabled);
+typically, backends will abort optimization if fractional change is
+less than this in two successive iterations,
+
+'TolFun' (required): (as corresponding Matlab compatible optimset
+option) scalar, minimum fractional improvement in sum of squared
+residuals between iterations; criterion for aborting optimization,
+
+'MaxIter' (required, but may be empty): (as corresponding Matlab
+compatible optimset option) maximum number of iterations,
+
+'weights' (required): weights for the residuals, same matrix size,
+
+'fixed' (required): logical vector, indicates that parameters are not
+optimized, but keep their values,
+
+'Display' (required): as corresponding Matlab compatible optimset
+option,
+
+'plot_cmd': function for plotting (intermediate) results, accepting
+current computed residuals as argument,
+
+The returned value 'cvg' has the same meaning as 'exitflag' in Matlabs
+'lsqcurvefit'.
+
+
+The returned value 'outp' is a structure with --- possibly --- the
+following fields:
+
+'niter': number of iterations.
+
+
+The fields 'diffp', 'diff_onesided', 'bounds', and 'plabels' in the
+'dfdp_hook' structure are not set in the backend, but can be set
+(e.g. by wrapping the jacobian function) in the frontend. The frontend
+also must correctly adapt the field 'fixed' (considering the
+parameters not seen by the backend). If _pstruct is set for the
+respective jacobian function, these values are passed as structures
+with each original row in a field with the name of a parameter.
+
+The structure 'dfdp_hook' can have the following fields:
+
+'diffp': positive column vector, relative parameter change (or
+absolute, if a parameter is zero) in finite differencing for
+derivatives,
+
+'diff_onesided': logical vector, indicates usage of one-sided
+intervals in finite differencing for derivatives,
+
+'fixed' (required): logical vector, indicating which of the passed
+parameters is not optimized, but fixed, so the respective derivatives
+need not be computed but should be filled in with zero,
+
+'bounds': as in structure 'hook' above, if given, bounds should not be
+violated even in finite differencing
+
+'f': returned value of the passed residual function for the current
+parameters; can spare re-computation in finite differencing.
+
+'plabels': a 2-dimensional cell array with parameter labels, one row
+for each parameter.
