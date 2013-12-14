@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.octave.missing"
     android:sharedUserId="com.octave.sharedid"
-    android:versionCode="1"
-    android:versionName="1.0.2_1" > 
+    android:installLocation="preferExternal"
+    android:versionCode="2"
+    android:versionName="1.0.2-4_all-1" > 
     
     <supports-screens android:resizeable="true"
                       android:smallScreens="true"                       
@@ -11,7 +12,9 @@
                       android:xlargeScreens="true"
                       android:anyDensity="true"/>
 
-    <uses-sdk android:minSdkVersion="3" />
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
+    
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
     <application
         android:icon="@drawable/icon"
