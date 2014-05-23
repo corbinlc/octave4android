@@ -1,0 +1,22 @@
+usr
+usr/share/
+usr/share/doc/
+usr/share/doc/octave-mapping/
+usr/share/doc/octave-mapping/changelog.Debian.gz
+usr/share/doc/octave-mapping/changelog.gz
+usr/share/doc/octave-mapping/copyright
+usr/share/octave/
+usr/share/octave/packages/
+usr/share/octave/packages/mapping-1.0.7/
+usr/share/octave/packages/mapping-1.0.7/azimuth.m
+usr/share/octave/packages/mapping-1.0.7/deg2rad.m
+usr/share/octave/packages/mapping-1.0.7/distance.m
+usr/share/octave/packages/mapping-1.0.7/doc-cache
+usr/share/octave/packages/mapping-1.0.7/km2deg.m
+usr/share/octave/packages/mapping-1.0.7/packinfo/
+usr/share/octave/packages/mapping-1.0.7/packinfo/DESCRIPTION
+usr/share/octave/packages/mapping-1.0.7/packinfo/INDEX
+usr/share/octave/packages/mapping-1.0.7/rad2deg.m
+usr/share/octave/packages/mapping-1.0.7/reckon.m
+
+7 directories, 12 files

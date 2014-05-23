@@ -1,0 +1,48 @@
+usr
+usr/lib/
+usr/lib/arm-linux-gnueabi/
+usr/lib/arm-linux-gnueabi/octave/
+usr/lib/arm-linux-gnueabi/octave/packages/
+usr/lib/arm-linux-gnueabi/octave/packages/symbolic-1.1.0/
+usr/lib/arm-linux-gnueabi/octave/packages/symbolic-1.1.0/arm-unknown-linux-gnueabi-api-v48+/
+usr/lib/arm-linux-gnueabi/octave/packages/symbolic-1.1.0/arm-unknown-linux-gnueabi-api-v48+/PKG_ADD -> /noexec/./usr/lib/arm-linux-gnueabi/octave/packages/symbolic-1.1.0/arm-unknown-linux-gnueabi-api-v48+/PKG_ADD
+usr/lib/arm-linux-gnueabi/octave/packages/symbolic-1.1.0/arm-unknown-linux-gnueabi-api-v48+/symbols.oct*
+usr/lib/libcln.so.6 -> libcln.so.6.0.2
+usr/lib/libcln.so.6.0.2
+usr/lib/libginac.so.2 -> libginac.so.2.1.0
+usr/lib/libginac.so.2.1.0
+usr/share/
+usr/share/doc/
+usr/share/doc/libcln6/
+usr/share/doc/libcln6/ChangeLog -> /noexec/./usr/share/doc/libcln6/ChangeLog
+usr/share/doc/libcln6/changelog.Debian.gz -> /noexec/./usr/share/doc/libcln6/changelog.Debian.gz
+usr/share/doc/libcln6/copyright -> /noexec/./usr/share/doc/libcln6/copyright
+usr/share/doc/libcln6/NEWS.gz -> /noexec/./usr/share/doc/libcln6/NEWS.gz
+usr/share/doc/libcln6/README -> /noexec/./usr/share/doc/libcln6/README
+usr/share/doc/libcln6/TODO -> /noexec/./usr/share/doc/libcln6/TODO
+usr/share/doc/libginac2/
+usr/share/doc/libginac2/AUTHORS -> /noexec/./usr/share/doc/libginac2/AUTHORS
+usr/share/doc/libginac2/changelog.Debian.gz -> /noexec/./usr/share/doc/libginac2/changelog.Debian.gz
+usr/share/doc/libginac2/changelog.gz -> /noexec/./usr/share/doc/libginac2/changelog.gz
+usr/share/doc/libginac2/copyright -> /noexec/./usr/share/doc/libginac2/copyright
+usr/share/doc/libginac2/NEWS.gz -> /noexec/./usr/share/doc/libginac2/NEWS.gz
+usr/share/doc/libginac2/README -> /noexec/./usr/share/doc/libginac2/README
+usr/share/doc/octave-symbolic/
+usr/share/doc/octave-symbolic/changelog.Debian.gz -> /noexec/./usr/share/doc/octave-symbolic/changelog.Debian.gz
+usr/share/doc/octave-symbolic/copyright -> /noexec/./usr/share/doc/octave-symbolic/copyright
+usr/share/doc/octave-symbolic/symbolic.html -> /noexec/./usr/share/doc/octave-symbolic/symbolic.html
+usr/share/octave/
+usr/share/octave/packages/
+usr/share/octave/packages/symbolic-1.1.0/
+usr/share/octave/packages/symbolic-1.1.0/doc-cache -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/doc-cache
+usr/share/octave/packages/symbolic-1.1.0/findsym.m -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/findsym.m
+usr/share/octave/packages/symbolic-1.1.0/packinfo/
+usr/share/octave/packages/symbolic-1.1.0/packinfo/.autoload
+usr/share/octave/packages/symbolic-1.1.0/packinfo/DESCRIPTION -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/packinfo/DESCRIPTION
+usr/share/octave/packages/symbolic-1.1.0/packinfo/INDEX -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/packinfo/INDEX
+usr/share/octave/packages/symbolic-1.1.0/poly2sym.m -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/poly2sym.m
+usr/share/octave/packages/symbolic-1.1.0/splot.m -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/splot.m
+usr/share/octave/packages/symbolic-1.1.0/sym2poly.m -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/sym2poly.m
+usr/share/octave/packages/symbolic-1.1.0/symfsolve.m -> /noexec/./usr/share/octave/packages/symbolic-1.1.0/symfsolve.m
+
+15 directories, 30 files

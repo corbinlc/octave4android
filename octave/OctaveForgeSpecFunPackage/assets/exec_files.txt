@@ -1,0 +1,47 @@
+.
+./exec_files.txt
+./exec.mp3
+./usr/
+./usr/lib/
+./usr/lib/arm-linux-gnueabi/
+./usr/lib/arm-linux-gnueabi/octave/
+./usr/lib/arm-linux-gnueabi/octave/packages/
+./usr/lib/arm-linux-gnueabi/octave/packages/specfun-1.1.0/
+./usr/lib/arm-linux-gnueabi/octave/packages/specfun-1.1.0/arm-unknown-linux-gnueabi-api-v48+/
+./usr/lib/arm-linux-gnueabi/octave/packages/specfun-1.1.0/arm-unknown-linux-gnueabi-api-v48+/ellipj.oct*
+./usr/share/
+./usr/share/doc/
+./usr/share/doc/octave-specfun/
+./usr/share/doc/octave-specfun/changelog.Debian.gz -> /noexec/./usr/share/doc/octave-specfun/changelog.Debian.gz
+./usr/share/doc/octave-specfun/copyright -> /noexec/./usr/share/doc/octave-specfun/copyright
+./usr/share/doc/octave-specfun/NEWS.gz -> /noexec/./usr/share/doc/octave-specfun/NEWS.gz
+./usr/share/octave/
+./usr/share/octave/packages/
+./usr/share/octave/packages/specfun-1.1.0/
+./usr/share/octave/packages/specfun-1.1.0/Ci.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/Ci.m
+./usr/share/octave/packages/specfun-1.1.0/cosint.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/cosint.m
+./usr/share/octave/packages/specfun-1.1.0/dirac.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/dirac.m
+./usr/share/octave/packages/specfun-1.1.0/doc-cache -> /noexec/./usr/share/octave/packages/specfun-1.1.0/doc-cache
+./usr/share/octave/packages/specfun-1.1.0/ellipke.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/ellipke.m
+./usr/share/octave/packages/specfun-1.1.0/erfcinv.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/erfcinv.m
+./usr/share/octave/packages/specfun-1.1.0/expint_E1.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/expint_E1.m
+./usr/share/octave/packages/specfun-1.1.0/expint_Ei.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/expint_Ei.m
+./usr/share/octave/packages/specfun-1.1.0/expint.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/expint.m
+./usr/share/octave/packages/specfun-1.1.0/heaviside.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/heaviside.m
+./usr/share/octave/packages/specfun-1.1.0/laguerre.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/laguerre.m
+./usr/share/octave/packages/specfun-1.1.0/lambertw.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/lambertw.m
+./usr/share/octave/packages/specfun-1.1.0/laplacian.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/laplacian.m
+./usr/share/octave/packages/specfun-1.1.0/multinom_coeff.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/multinom_coeff.m
+./usr/share/octave/packages/specfun-1.1.0/multinom_exp.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/multinom_exp.m
+./usr/share/octave/packages/specfun-1.1.0/multinom.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/multinom.m
+./usr/share/octave/packages/specfun-1.1.0/packinfo/
+./usr/share/octave/packages/specfun-1.1.0/packinfo/.autoload
+./usr/share/octave/packages/specfun-1.1.0/packinfo/DESCRIPTION -> /noexec/./usr/share/octave/packages/specfun-1.1.0/packinfo/DESCRIPTION
+./usr/share/octave/packages/specfun-1.1.0/packinfo/INDEX -> /noexec/./usr/share/octave/packages/specfun-1.1.0/packinfo/INDEX
+./usr/share/octave/packages/specfun-1.1.0/packinfo/NEWS -> /noexec/./usr/share/octave/packages/specfun-1.1.0/packinfo/NEWS
+./usr/share/octave/packages/specfun-1.1.0/psi.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/psi.m
+./usr/share/octave/packages/specfun-1.1.0/Si.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/Si.m
+./usr/share/octave/packages/specfun-1.1.0/sinint.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/sinint.m
+./usr/share/octave/packages/specfun-1.1.0/zeta.m -> /noexec/./usr/share/octave/packages/specfun-1.1.0/zeta.m
+
+14 directories, 30 files

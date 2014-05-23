@@ -1,0 +1,100 @@
+.
+./exec_files.txt
+./exec.mp3
+./usr/
+./usr/share/
+./usr/share/doc/
+./usr/share/doc/octave-statistics/
+./usr/share/doc/octave-statistics/changelog.Debian.gz -> /noexec/./usr/share/doc/octave-statistics/changelog.Debian.gz
+./usr/share/doc/octave-statistics/copyright -> /noexec/./usr/share/doc/octave-statistics/copyright
+./usr/share/doc/octave-statistics/NEWS.gz -> /noexec/./usr/share/doc/octave-statistics/NEWS.gz
+./usr/share/octave/
+./usr/share/octave/packages/
+./usr/share/octave/packages/statistics-1.1.3/
+./usr/share/octave/packages/statistics-1.1.3/anderson_darling_cdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/anderson_darling_cdf.m
+./usr/share/octave/packages/statistics-1.1.3/anderson_darling_test.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/anderson_darling_test.m
+./usr/share/octave/packages/statistics-1.1.3/anovan.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/anovan.m
+./usr/share/octave/packages/statistics-1.1.3/betastat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/betastat.m
+./usr/share/octave/packages/statistics-1.1.3/binostat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/binostat.m
+./usr/share/octave/packages/statistics-1.1.3/boxplot.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/boxplot.m
+./usr/share/octave/packages/statistics-1.1.3/caseread.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/caseread.m
+./usr/share/octave/packages/statistics-1.1.3/casewrite.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/casewrite.m
+./usr/share/octave/packages/statistics-1.1.3/chi2stat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/chi2stat.m
+./usr/share/octave/packages/statistics-1.1.3/cl_multinom.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/cl_multinom.m
+./usr/share/octave/packages/statistics-1.1.3/combnk.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/combnk.m
+./usr/share/octave/packages/statistics-1.1.3/copulacdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/copulacdf.m
+./usr/share/octave/packages/statistics-1.1.3/copulapdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/copulapdf.m
+./usr/share/octave/packages/statistics-1.1.3/copularnd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/copularnd.m
+./usr/share/octave/packages/statistics-1.1.3/doc-cache -> /noexec/./usr/share/octave/packages/statistics-1.1.3/doc-cache
+./usr/share/octave/packages/statistics-1.1.3/expstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/expstat.m
+./usr/share/octave/packages/statistics-1.1.3/ff2n.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/ff2n.m
+./usr/share/octave/packages/statistics-1.1.3/fstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/fstat.m
+./usr/share/octave/packages/statistics-1.1.3/fullfact.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/fullfact.m
+./usr/share/octave/packages/statistics-1.1.3/gamfit.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/gamfit.m
+./usr/share/octave/packages/statistics-1.1.3/gamlike.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/gamlike.m
+./usr/share/octave/packages/statistics-1.1.3/gamstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/gamstat.m
+./usr/share/octave/packages/statistics-1.1.3/geomean.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/geomean.m
+./usr/share/octave/packages/statistics-1.1.3/geostat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/geostat.m
+./usr/share/octave/packages/statistics-1.1.3/harmmean.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/harmmean.m
+./usr/share/octave/packages/statistics-1.1.3/histfit.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/histfit.m
+./usr/share/octave/packages/statistics-1.1.3/hmmestimate.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/hmmestimate.m
+./usr/share/octave/packages/statistics-1.1.3/hmmgenerate.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/hmmgenerate.m
+./usr/share/octave/packages/statistics-1.1.3/hmmviterbi.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/hmmviterbi.m
+./usr/share/octave/packages/statistics-1.1.3/hygestat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/hygestat.m
+./usr/share/octave/packages/statistics-1.1.3/jackknife.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/jackknife.m
+./usr/share/octave/packages/statistics-1.1.3/jsucdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/jsucdf.m
+./usr/share/octave/packages/statistics-1.1.3/jsupdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/jsupdf.m
+./usr/share/octave/packages/statistics-1.1.3/kmeans.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/kmeans.m
+./usr/share/octave/packages/statistics-1.1.3/linkage.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/linkage.m
+./usr/share/octave/packages/statistics-1.1.3/lognstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/lognstat.m
+./usr/share/octave/packages/statistics-1.1.3/mad.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mad.m
+./usr/share/octave/packages/statistics-1.1.3/mnpdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mnpdf.m
+./usr/share/octave/packages/statistics-1.1.3/mnrnd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mnrnd.m
+./usr/share/octave/packages/statistics-1.1.3/monotone_smooth.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/monotone_smooth.m
+./usr/share/octave/packages/statistics-1.1.3/mvncdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mvncdf.m
+./usr/share/octave/packages/statistics-1.1.3/mvnpdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mvnpdf.m
+./usr/share/octave/packages/statistics-1.1.3/mvnrnd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mvnrnd.m
+./usr/share/octave/packages/statistics-1.1.3/mvtcdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mvtcdf.m
+./usr/share/octave/packages/statistics-1.1.3/mvtrnd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/mvtrnd.m
+./usr/share/octave/packages/statistics-1.1.3/nanmax.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nanmax.m
+./usr/share/octave/packages/statistics-1.1.3/nanmean.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nanmean.m
+./usr/share/octave/packages/statistics-1.1.3/nanmedian.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nanmedian.m
+./usr/share/octave/packages/statistics-1.1.3/nanmin.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nanmin.m
+./usr/share/octave/packages/statistics-1.1.3/nanstd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nanstd.m
+./usr/share/octave/packages/statistics-1.1.3/nansum.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nansum.m
+./usr/share/octave/packages/statistics-1.1.3/nanvar.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nanvar.m
+./usr/share/octave/packages/statistics-1.1.3/nbinstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/nbinstat.m
+./usr/share/octave/packages/statistics-1.1.3/normalise_distribution.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/normalise_distribution.m
+./usr/share/octave/packages/statistics-1.1.3/normplot.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/normplot.m
+./usr/share/octave/packages/statistics-1.1.3/normstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/normstat.m
+./usr/share/octave/packages/statistics-1.1.3/packinfo/
+./usr/share/octave/packages/statistics-1.1.3/packinfo/.autoload
+./usr/share/octave/packages/statistics-1.1.3/packinfo/DESCRIPTION -> /noexec/./usr/share/octave/packages/statistics-1.1.3/packinfo/DESCRIPTION
+./usr/share/octave/packages/statistics-1.1.3/packinfo/INDEX -> /noexec/./usr/share/octave/packages/statistics-1.1.3/packinfo/INDEX
+./usr/share/octave/packages/statistics-1.1.3/packinfo/NEWS -> /noexec/./usr/share/octave/packages/statistics-1.1.3/packinfo/NEWS
+./usr/share/octave/packages/statistics-1.1.3/pdist.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/pdist.m
+./usr/share/octave/packages/statistics-1.1.3/poisstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/poisstat.m
+./usr/share/octave/packages/statistics-1.1.3/princomp.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/princomp.m
+./usr/share/octave/packages/statistics-1.1.3/private/
+./usr/share/octave/packages/statistics-1.1.3/private/tbl_delim.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/private/tbl_delim.m
+./usr/share/octave/packages/statistics-1.1.3/random.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/random.m
+./usr/share/octave/packages/statistics-1.1.3/raylcdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/raylcdf.m
+./usr/share/octave/packages/statistics-1.1.3/raylinv.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/raylinv.m
+./usr/share/octave/packages/statistics-1.1.3/raylpdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/raylpdf.m
+./usr/share/octave/packages/statistics-1.1.3/raylrnd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/raylrnd.m
+./usr/share/octave/packages/statistics-1.1.3/raylstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/raylstat.m
+./usr/share/octave/packages/statistics-1.1.3/regress.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/regress.m
+./usr/share/octave/packages/statistics-1.1.3/repanova.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/repanova.m
+./usr/share/octave/packages/statistics-1.1.3/squareform.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/squareform.m
+./usr/share/octave/packages/statistics-1.1.3/tabulate.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/tabulate.m
+./usr/share/octave/packages/statistics-1.1.3/tblread.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/tblread.m
+./usr/share/octave/packages/statistics-1.1.3/tblwrite.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/tblwrite.m
+./usr/share/octave/packages/statistics-1.1.3/trimmean.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/trimmean.m
+./usr/share/octave/packages/statistics-1.1.3/tstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/tstat.m
+./usr/share/octave/packages/statistics-1.1.3/unidstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/unidstat.m
+./usr/share/octave/packages/statistics-1.1.3/unifstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/unifstat.m
+./usr/share/octave/packages/statistics-1.1.3/vmpdf.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/vmpdf.m
+./usr/share/octave/packages/statistics-1.1.3/vmrnd.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/vmrnd.m
+./usr/share/octave/packages/statistics-1.1.3/wblstat.m -> /noexec/./usr/share/octave/packages/statistics-1.1.3/wblstat.m
+
+9 directories, 88 files

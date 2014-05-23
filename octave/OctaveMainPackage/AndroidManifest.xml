@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.octave.main"
+    android:sharedUserId="com.octave.sharedid"
+    android:installLocation="preferExternal"
+    android:versionCode="7"
+    android:versionName="3.6.2-5+deb7u1-armel-5" > 
+    
+    <supports-screens android:resizeable="true"
+                      android:smallScreens="true"                       
+                      android:normalScreens="true"                       
+                      android:largeScreens="true"
+                      android:xlargeScreens="true"
+                      android:anyDensity="true"/>
+
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
+    
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name">        
+        <activity android:name="com.octave.main.octaveDownloaderActivity"
+                android:excludeFromRecents="true"
+                android:configChanges="keyboard|keyboardHidden|orientation">
+        </activity>
+        <service android:name="com.octave.main.octaveDownloaderService" />
+        <receiver android:name="com.octave.main.octaveAlarmReceiver" />
+    </application>
+
+</manifest>

@@ -1,0 +1,168 @@
+.
+./exec_files.txt
+./exec.mp3
+./usr/
+./usr/lib/
+./usr/lib/arm-linux-gnueabi/
+./usr/lib/arm-linux-gnueabi/octave/
+./usr/lib/arm-linux-gnueabi/octave/packages/
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/arm-unknown-linux-gnueabi-api-v48+/
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/arm-unknown-linux-gnueabi-api-v48+/cl2bp.oct*
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/arm-unknown-linux-gnueabi-api-v48+/medfilt1.oct*
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/arm-unknown-linux-gnueabi-api-v48+/remez.oct*
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/arm-unknown-linux-gnueabi-api-v48+/sosfilt.oct*
+./usr/lib/arm-linux-gnueabi/octave/packages/signal-1.1.3/arm-unknown-linux-gnueabi-api-v48+/upfirdn.oct*
+./usr/share/
+./usr/share/doc/
+./usr/share/doc/octave-signal/
+./usr/share/doc/octave-signal/changelog.Debian.gz -> /noexec/./usr/share/doc/octave-signal/changelog.Debian.gz
+./usr/share/doc/octave-signal/copyright -> /noexec/./usr/share/doc/octave-signal/copyright
+./usr/share/doc/octave-signal/NEWS.gz -> /noexec/./usr/share/doc/octave-signal/NEWS.gz
+./usr/share/octave/
+./usr/share/octave/packages/
+./usr/share/octave/packages/signal-1.1.3/
+./usr/share/octave/packages/signal-1.1.3/arburg.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/arburg.m
+./usr/share/octave/packages/signal-1.1.3/ar_psd.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ar_psd.m
+./usr/share/octave/packages/signal-1.1.3/aryule.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/aryule.m
+./usr/share/octave/packages/signal-1.1.3/barthannwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/barthannwin.m
+./usr/share/octave/packages/signal-1.1.3/besselap.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/besselap.m
+./usr/share/octave/packages/signal-1.1.3/besself.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/besself.m
+./usr/share/octave/packages/signal-1.1.3/bilinear.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/bilinear.m
+./usr/share/octave/packages/signal-1.1.3/bitrevorder.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/bitrevorder.m
+./usr/share/octave/packages/signal-1.1.3/blackmanharris.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/blackmanharris.m
+./usr/share/octave/packages/signal-1.1.3/blackmannuttall.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/blackmannuttall.m
+./usr/share/octave/packages/signal-1.1.3/bohmanwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/bohmanwin.m
+./usr/share/octave/packages/signal-1.1.3/boxcar.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/boxcar.m
+./usr/share/octave/packages/signal-1.1.3/buffer.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/buffer.m
+./usr/share/octave/packages/signal-1.1.3/butter.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/butter.m
+./usr/share/octave/packages/signal-1.1.3/buttord.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/buttord.m
+./usr/share/octave/packages/signal-1.1.3/cceps.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cceps.m
+./usr/share/octave/packages/signal-1.1.3/cheb1ord.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cheb1ord.m
+./usr/share/octave/packages/signal-1.1.3/cheb2ord.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cheb2ord.m
+./usr/share/octave/packages/signal-1.1.3/cheb.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cheb.m
+./usr/share/octave/packages/signal-1.1.3/chebwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/chebwin.m
+./usr/share/octave/packages/signal-1.1.3/cheby1.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cheby1.m
+./usr/share/octave/packages/signal-1.1.3/cheby2.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cheby2.m
+./usr/share/octave/packages/signal-1.1.3/chirp.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/chirp.m
+./usr/share/octave/packages/signal-1.1.3/cmorwavf.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cmorwavf.m
+./usr/share/octave/packages/signal-1.1.3/cohere.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cohere.m
+./usr/share/octave/packages/signal-1.1.3/convmtx.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/convmtx.m
+./usr/share/octave/packages/signal-1.1.3/cplxreal.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cplxreal.m
+./usr/share/octave/packages/signal-1.1.3/cpsd.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/cpsd.m
+./usr/share/octave/packages/signal-1.1.3/csd.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/csd.m
+./usr/share/octave/packages/signal-1.1.3/czt.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/czt.m
+./usr/share/octave/packages/signal-1.1.3/data2fun.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/data2fun.m
+./usr/share/octave/packages/signal-1.1.3/dct2.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/dct2.m
+./usr/share/octave/packages/signal-1.1.3/dct.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/dct.m
+./usr/share/octave/packages/signal-1.1.3/dctmtx.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/dctmtx.m
+./usr/share/octave/packages/signal-1.1.3/decimate.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/decimate.m
+./usr/share/octave/packages/signal-1.1.3/dftmtx.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/dftmtx.m
+./usr/share/octave/packages/signal-1.1.3/diric.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/diric.m
+./usr/share/octave/packages/signal-1.1.3/doc-cache -> /noexec/./usr/share/octave/packages/signal-1.1.3/doc-cache
+./usr/share/octave/packages/signal-1.1.3/downsample.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/downsample.m
+./usr/share/octave/packages/signal-1.1.3/dst.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/dst.m
+./usr/share/octave/packages/signal-1.1.3/dwt.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/dwt.m
+./usr/share/octave/packages/signal-1.1.3/ellip.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ellip.m
+./usr/share/octave/packages/signal-1.1.3/ellipord.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ellipord.m
+./usr/share/octave/packages/signal-1.1.3/fht.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/fht.m
+./usr/share/octave/packages/signal-1.1.3/filtfilt.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/filtfilt.m
+./usr/share/octave/packages/signal-1.1.3/filtic.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/filtic.m
+./usr/share/octave/packages/signal-1.1.3/fir1.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/fir1.m
+./usr/share/octave/packages/signal-1.1.3/fir2.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/fir2.m
+./usr/share/octave/packages/signal-1.1.3/firls.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/firls.m
+./usr/share/octave/packages/signal-1.1.3/flattopwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/flattopwin.m
+./usr/share/octave/packages/signal-1.1.3/fracshift.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/fracshift.m
+./usr/share/octave/packages/signal-1.1.3/freqs.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/freqs.m
+./usr/share/octave/packages/signal-1.1.3/freqs_plot.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/freqs_plot.m
+./usr/share/octave/packages/signal-1.1.3/fwhm.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/fwhm.m
+./usr/share/octave/packages/signal-1.1.3/gauspuls.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/gauspuls.m
+./usr/share/octave/packages/signal-1.1.3/gaussian.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/gaussian.m
+./usr/share/octave/packages/signal-1.1.3/gausswin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/gausswin.m
+./usr/share/octave/packages/signal-1.1.3/gmonopuls.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/gmonopuls.m
+./usr/share/octave/packages/signal-1.1.3/grpdelay.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/grpdelay.m
+./usr/share/octave/packages/signal-1.1.3/hann.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/hann.m
+./usr/share/octave/packages/signal-1.1.3/hilbert.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/hilbert.m
+./usr/share/octave/packages/signal-1.1.3/idct2.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/idct2.m
+./usr/share/octave/packages/signal-1.1.3/idct.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/idct.m
+./usr/share/octave/packages/signal-1.1.3/idst.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/idst.m
+./usr/share/octave/packages/signal-1.1.3/ifht.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ifht.m
+./usr/share/octave/packages/signal-1.1.3/iirlp2mb.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/iirlp2mb.m
+./usr/share/octave/packages/signal-1.1.3/impinvar.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/impinvar.m
+./usr/share/octave/packages/signal-1.1.3/impz.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/impz.m
+./usr/share/octave/packages/signal-1.1.3/interp.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/interp.m
+./usr/share/octave/packages/signal-1.1.3/invfreq.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/invfreq.m
+./usr/share/octave/packages/signal-1.1.3/invfreqs.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/invfreqs.m
+./usr/share/octave/packages/signal-1.1.3/invfreqz.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/invfreqz.m
+./usr/share/octave/packages/signal-1.1.3/invimpinvar.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/invimpinvar.m
+./usr/share/octave/packages/signal-1.1.3/kaiser.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/kaiser.m
+./usr/share/octave/packages/signal-1.1.3/kaiserord.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/kaiserord.m
+./usr/share/octave/packages/signal-1.1.3/levinson.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/levinson.m
+./usr/share/octave/packages/signal-1.1.3/marcumq.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/marcumq.m
+./usr/share/octave/packages/signal-1.1.3/mexihat.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/mexihat.m
+./usr/share/octave/packages/signal-1.1.3/meyeraux.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/meyeraux.m
+./usr/share/octave/packages/signal-1.1.3/morlet.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/morlet.m
+./usr/share/octave/packages/signal-1.1.3/mscohere.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/mscohere.m
+./usr/share/octave/packages/signal-1.1.3/ncauer.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ncauer.m
+./usr/share/octave/packages/signal-1.1.3/nuttallwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/nuttallwin.m
+./usr/share/octave/packages/signal-1.1.3/packinfo/
+./usr/share/octave/packages/signal-1.1.3/packinfo/.autoload
+./usr/share/octave/packages/signal-1.1.3/packinfo/DESCRIPTION -> /noexec/./usr/share/octave/packages/signal-1.1.3/packinfo/DESCRIPTION
+./usr/share/octave/packages/signal-1.1.3/packinfo/INDEX -> /noexec/./usr/share/octave/packages/signal-1.1.3/packinfo/INDEX
+./usr/share/octave/packages/signal-1.1.3/packinfo/NEWS -> /noexec/./usr/share/octave/packages/signal-1.1.3/packinfo/NEWS
+./usr/share/octave/packages/signal-1.1.3/parzenwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/parzenwin.m
+./usr/share/octave/packages/signal-1.1.3/pburg.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/pburg.m
+./usr/share/octave/packages/signal-1.1.3/pei_tseng_notch.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/pei_tseng_notch.m
+./usr/share/octave/packages/signal-1.1.3/polystab.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/polystab.m
+./usr/share/octave/packages/signal-1.1.3/__power.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/__power.m
+./usr/share/octave/packages/signal-1.1.3/private/
+./usr/share/octave/packages/signal-1.1.3/private/h1_z_deriv.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/private/h1_z_deriv.m
+./usr/share/octave/packages/signal-1.1.3/private/inv_residue.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/private/inv_residue.m
+./usr/share/octave/packages/signal-1.1.3/private/polyrev.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/private/polyrev.m
+./usr/share/octave/packages/signal-1.1.3/private/to_real.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/private/to_real.m
+./usr/share/octave/packages/signal-1.1.3/pulstran.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/pulstran.m
+./usr/share/octave/packages/signal-1.1.3/pwelch.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/pwelch.m
+./usr/share/octave/packages/signal-1.1.3/pyulear.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/pyulear.m
+./usr/share/octave/packages/signal-1.1.3/qp_kaiser.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/qp_kaiser.m
+./usr/share/octave/packages/signal-1.1.3/rceps.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/rceps.m
+./usr/share/octave/packages/signal-1.1.3/rectpuls.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/rectpuls.m
+./usr/share/octave/packages/signal-1.1.3/rectwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/rectwin.m
+./usr/share/octave/packages/signal-1.1.3/resample.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/resample.m
+./usr/share/octave/packages/signal-1.1.3/residued.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/residued.m
+./usr/share/octave/packages/signal-1.1.3/residuez.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/residuez.m
+./usr/share/octave/packages/signal-1.1.3/sampled2continuous.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sampled2continuous.m
+./usr/share/octave/packages/signal-1.1.3/sawtooth.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sawtooth.m
+./usr/share/octave/packages/signal-1.1.3/sftrans.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sftrans.m
+./usr/share/octave/packages/signal-1.1.3/sgolayfilt.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sgolayfilt.m
+./usr/share/octave/packages/signal-1.1.3/sgolay.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sgolay.m
+./usr/share/octave/packages/signal-1.1.3/shanwavf.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/shanwavf.m
+./usr/share/octave/packages/signal-1.1.3/sigmoid_train.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sigmoid_train.m
+./usr/share/octave/packages/signal-1.1.3/sos2tf.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sos2tf.m
+./usr/share/octave/packages/signal-1.1.3/sos2zp.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/sos2zp.m
+./usr/share/octave/packages/signal-1.1.3/specgram.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/specgram.m
+./usr/share/octave/packages/signal-1.1.3/square.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/square.m
+./usr/share/octave/packages/signal-1.1.3/ss2tf.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ss2tf.m
+./usr/share/octave/packages/signal-1.1.3/ss2zp.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/ss2zp.m
+./usr/share/octave/packages/signal-1.1.3/tf2sos.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tf2sos.m
+./usr/share/octave/packages/signal-1.1.3/tf2ss.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tf2ss.m
+./usr/share/octave/packages/signal-1.1.3/tf2zp.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tf2zp.m
+./usr/share/octave/packages/signal-1.1.3/tfe.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tfe.m
+./usr/share/octave/packages/signal-1.1.3/tfestimate.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tfestimate.m
+./usr/share/octave/packages/signal-1.1.3/triang.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/triang.m
+./usr/share/octave/packages/signal-1.1.3/tripuls.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tripuls.m
+./usr/share/octave/packages/signal-1.1.3/tukeywin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/tukeywin.m
+./usr/share/octave/packages/signal-1.1.3/upsample.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/upsample.m
+./usr/share/octave/packages/signal-1.1.3/welchwin.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/welchwin.m
+./usr/share/octave/packages/signal-1.1.3/window.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/window.m
+./usr/share/octave/packages/signal-1.1.3/wkeep.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/wkeep.m
+./usr/share/octave/packages/signal-1.1.3/wrev.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/wrev.m
+./usr/share/octave/packages/signal-1.1.3/xcorr2.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/xcorr2.m
+./usr/share/octave/packages/signal-1.1.3/xcorr.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/xcorr.m
+./usr/share/octave/packages/signal-1.1.3/xcov.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/xcov.m
+./usr/share/octave/packages/signal-1.1.3/zerocrossing.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/zerocrossing.m
+./usr/share/octave/packages/signal-1.1.3/zp2sos.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/zp2sos.m
+./usr/share/octave/packages/signal-1.1.3/zp2ss.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/zp2ss.m
+./usr/share/octave/packages/signal-1.1.3/zp2tf.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/zp2tf.m
+./usr/share/octave/packages/signal-1.1.3/zplane.m -> /noexec/./usr/share/octave/packages/signal-1.1.3/zplane.m
+
+15 directories, 150 files

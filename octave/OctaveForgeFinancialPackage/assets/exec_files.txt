@@ -1,0 +1,81 @@
+.
+./exec_files.txt
+./exec.mp3
+./usr/
+./usr/share/
+./usr/share/doc/
+./usr/share/doc/octave-financial/
+./usr/share/doc/octave-financial/changelog.Debian.gz -> /noexec/./usr/share/doc/octave-financial/changelog.Debian.gz
+./usr/share/doc/octave-financial/copyright -> /noexec/./usr/share/doc/octave-financial/copyright
+./usr/share/doc/octave-financial/NEWS.gz -> /noexec/./usr/share/doc/octave-financial/NEWS.gz
+./usr/share/octave/
+./usr/share/octave/packages/
+./usr/share/octave/packages/financial-0.4.0/
+./usr/share/octave/packages/financial-0.4.0/bolling.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/bolling.m
+./usr/share/octave/packages/financial-0.4.0/busdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/busdate.m
+./usr/share/octave/packages/financial-0.4.0/busdays.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/busdays.m
+./usr/share/octave/packages/financial-0.4.0/cfconv.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/cfconv.m
+./usr/share/octave/packages/financial-0.4.0/cfdur.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/cfdur.m
+./usr/share/octave/packages/financial-0.4.0/corr2cov.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/corr2cov.m
+./usr/share/octave/packages/financial-0.4.0/cov2corr.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/cov2corr.m
+./usr/share/octave/packages/financial-0.4.0/dateaxis.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/dateaxis.m
+./usr/share/octave/packages/financial-0.4.0/datefind.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/datefind.m
+./usr/share/octave/packages/financial-0.4.0/datesplit.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/datesplit.m
+./usr/share/octave/packages/financial-0.4.0/day.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/day.m
+./usr/share/octave/packages/financial-0.4.0/daysact.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/daysact.m
+./usr/share/octave/packages/financial-0.4.0/doc-cache -> /noexec/./usr/share/octave/packages/financial-0.4.0/doc-cache
+./usr/share/octave/packages/financial-0.4.0/easter.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/easter.m
+./usr/share/octave/packages/financial-0.4.0/effrr.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/effrr.m
+./usr/share/octave/packages/financial-0.4.0/eomdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/eomdate.m
+./usr/share/octave/packages/financial-0.4.0/fbusdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/fbusdate.m
+./usr/share/octave/packages/financial-0.4.0/fetch.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/fetch.m
+./usr/share/octave/packages/financial-0.4.0/fvl.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/fvl.m
+./usr/share/octave/packages/financial-0.4.0/fv.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/fv.m
+./usr/share/octave/packages/financial-0.4.0/google.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/google.m
+./usr/share/octave/packages/financial-0.4.0/hhigh.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/hhigh.m
+./usr/share/octave/packages/financial-0.4.0/highlow.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/highlow.m
+./usr/share/octave/packages/financial-0.4.0/holidays.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/holidays.m
+./usr/share/octave/packages/financial-0.4.0/hour.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/hour.m
+./usr/share/octave/packages/financial-0.4.0/irr.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/irr.m
+./usr/share/octave/packages/financial-0.4.0/isbusday.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/isbusday.m
+./usr/share/octave/packages/financial-0.4.0/lbusdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/lbusdate.m
+./usr/share/octave/packages/financial-0.4.0/llow.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/llow.m
+./usr/share/octave/packages/financial-0.4.0/lweekdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/lweekdate.m
+./usr/share/octave/packages/financial-0.4.0/m2xdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/m2xdate.m
+./usr/share/octave/packages/financial-0.4.0/minute.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/minute.m
+./usr/share/octave/packages/financial-0.4.0/mirr.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/mirr.m
+./usr/share/octave/packages/financial-0.4.0/month.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/month.m
+./usr/share/octave/packages/financial-0.4.0/months.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/months.m
+./usr/share/octave/packages/financial-0.4.0/movavg.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/movavg.m
+./usr/share/octave/packages/financial-0.4.0/negvolidx.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/negvolidx.m
+./usr/share/octave/packages/financial-0.4.0/nomrr.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/nomrr.m
+./usr/share/octave/packages/financial-0.4.0/nper.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/nper.m
+./usr/share/octave/packages/financial-0.4.0/npv.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/npv.m
+./usr/share/octave/packages/financial-0.4.0/nweekdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/nweekdate.m
+./usr/share/octave/packages/financial-0.4.0/onbalvol.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/onbalvol.m
+./usr/share/octave/packages/financial-0.4.0/packinfo/
+./usr/share/octave/packages/financial-0.4.0/packinfo/.autoload
+./usr/share/octave/packages/financial-0.4.0/packinfo/DESCRIPTION -> /noexec/./usr/share/octave/packages/financial-0.4.0/packinfo/DESCRIPTION
+./usr/share/octave/packages/financial-0.4.0/packinfo/INDEX -> /noexec/./usr/share/octave/packages/financial-0.4.0/packinfo/INDEX
+./usr/share/octave/packages/financial-0.4.0/packinfo/NEWS -> /noexec/./usr/share/octave/packages/financial-0.4.0/packinfo/NEWS
+./usr/share/octave/packages/financial-0.4.0/pmt.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/pmt.m
+./usr/share/octave/packages/financial-0.4.0/pointfig.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/pointfig.m
+./usr/share/octave/packages/financial-0.4.0/posvolidx.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/posvolidx.m
+./usr/share/octave/packages/financial-0.4.0/private/
+./usr/share/octave/packages/financial-0.4.0/private/fetch_google.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/private/fetch_google.m
+./usr/share/octave/packages/financial-0.4.0/private/fetch_yahoo.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/private/fetch_yahoo.m
+./usr/share/octave/packages/financial-0.4.0/pvl.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/pvl.m
+./usr/share/octave/packages/financial-0.4.0/pv.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/pv.m
+./usr/share/octave/packages/financial-0.4.0/rate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/rate.m
+./usr/share/octave/packages/financial-0.4.0/rsindex.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/rsindex.m
+./usr/share/octave/packages/financial-0.4.0/second.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/second.m
+./usr/share/octave/packages/financial-0.4.0/taxedrr.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/taxedrr.m
+./usr/share/octave/packages/financial-0.4.0/thirdwednesday.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/thirdwednesday.m
+./usr/share/octave/packages/financial-0.4.0/today.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/today.m
+./usr/share/octave/packages/financial-0.4.0/vol.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/vol.m
+./usr/share/octave/packages/financial-0.4.0/x2mdate.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/x2mdate.m
+./usr/share/octave/packages/financial-0.4.0/yahoo.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/yahoo.m
+./usr/share/octave/packages/financial-0.4.0/yeardays.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/yeardays.m
+./usr/share/octave/packages/financial-0.4.0/year.m -> /noexec/./usr/share/octave/packages/financial-0.4.0/year.m
+
+9 directories, 69 files

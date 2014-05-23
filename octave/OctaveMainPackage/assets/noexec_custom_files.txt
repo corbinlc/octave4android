@@ -1,0 +1,14 @@
+.
+./usr/
+./usr/share/
+./usr/share/octave/
+./usr/share/octave/3.6.2/
+./usr/share/octave/3.6.2/m/
+./usr/share/octave/3.6.2/m/plot/
+./usr/share/octave/3.6.2/m/plot/__gnuplot_drawnow__.m
+./usr/share/octave/site/
+./usr/share/octave/site/m/
+./usr/share/octave/site/m/startup/
+./usr/share/octave/site/m/startup/octaverc
+
+9 directories, 2 files
